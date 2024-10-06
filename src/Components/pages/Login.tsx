@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Mail, Lock, EyeOff, Eye, AlertCircle } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const HospitalLogin: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,6 +26,7 @@ const HospitalLogin: React.FC = () => {
     setTimeout(() => {
       if (email === "test@hospital.com" && password === "password123") {
         alert("Login successful!");
+        navigate("/dashboard");
         // Redirect or update state as needed
       } else {
         setError("Invalid email or password. Please try again.");
