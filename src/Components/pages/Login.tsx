@@ -24,6 +24,8 @@ const HospitalLogin: React.FC = () => {
 
     // Simulating an API call
     setTimeout(() => {
+      console.log(email,password);
+      
       if (email === "test@hospital.com" && password === "12345678") {
         // alert("Login successful!");
         navigate("/dashboard");
