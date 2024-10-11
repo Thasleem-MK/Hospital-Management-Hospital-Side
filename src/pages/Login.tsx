@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { Mail, Lock, EyeOff, Eye, AlertCircle } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import { BackButton, FormInput } from "../Components/Commen";
+import { apiClient } from "../Components/Axios";
+import { successToast } from "../Components/Toastify";
 
 const HospitalLogin: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -13,35 +20,30 @@ const HospitalLogin: React.FC = () => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
+    if (!formData.email || !formData.password) {
       setError("Please enter both email and password.");
       return;
     }
-
-    // Here you would typically make an API call to authenticate
-    // For demonstration, we'll just log the attempt
-    console.log("Login attempt with:", { email, password });
-
-    // Simulating an API call
-    setTimeout(() => {
-      console.log(email,password);
-      
-      if (email === "test@hospital.com" && password === "12345678") {
-        // alert("Login successful!");
+    await apiClient
+      .post("/api/hospital/login", { ...formData }, { withCredentials: true })
+      .then((result) => {
+        console.log(result);
+        successToast(result.data.message);
         navigate("/dashboard");
-        // Redirect or update state as needed
-      } else {
-        setError("Invalid email or password. Please try again.");
-      }
-    }, 1000);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.response.data.message + ", Please try again.");
+      });
   };
 
   return (
     <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-3xl font-bold text-green-800 text-center mb-6">
-          Hospital Login
-        </h2>
+        <div className="relative mb-6 flex items-center justify-center">
+          <BackButton OnClick={() => navigate("/")} />
+          <h2 className="text-3xl font-bold text-green-800">User Login</h2>
+        </div>
         {error && (
           <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded flex items-center">
             <AlertCircle className="mr-2" size={18} />
@@ -61,14 +63,14 @@ const HospitalLogin: React.FC = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
                 size={18}
               />
-              <input
+              <FormInput
                 type="email"
                 id="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                value={formData.email}
+                onChange={(e: any) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
                 placeholder="Enter your email"
-                required
               />
             </div>
           </div>
@@ -84,14 +86,14 @@ const HospitalLogin: React.FC = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
                 size={18}
               />
-              <input
+              <FormInput
                 type={showPassword ? "text" : "password"}
                 id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 pr-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                value={formData.password}
+                onChange={(e: any) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
                 placeholder="Enter your password"
-                required
               />
               <button
                 type="button"

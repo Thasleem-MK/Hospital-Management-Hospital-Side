@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import HospitalRegistration from "./Components/pages/Registration";
-import HospitalLogin from "./Components/pages/Login";
-import PasswordReset from "./Components/pages/PasswordReset";
-import HospitalHomePage from "./Components/pages/Home";
-import HospitalDashboard from "./Components/pages/HospitalDashboard";
+import HospitalRegistration from "./pages/Registration";
+import HospitalLogin from "./pages/Login";
+import PasswordReset from "./pages/PasswordReset";
+import HospitalHomePage from "./pages/Home";
+import HospitalDashboard from "./pages/HospitalDashboard";
 
 function App() {
   return (

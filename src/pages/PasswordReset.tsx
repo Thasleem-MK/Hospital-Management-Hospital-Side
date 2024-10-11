@@ -1,24 +1,34 @@
 import React, { useState } from "react";
 import { Mail, Lock, CheckCircle, AlertCircle, ArrowLeft } from "lucide-react";
+import { BackButton } from "../Components/Commen";
+import { useNavigate } from "react-router-dom";
 
 const PasswordReset: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    otp: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  // const [email, setEmail] = useState("");
+  // const [otp, setOtp] = useState("");
+  // const [newPassword, setNewPassword] = useState("");
+  // const [confirmPassword, setConfirmPassword] = useState("");
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const navigate = useNavigate();
+
   const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!email) {
+    if (!formData.email) {
       setError("Please enter your email address.");
       return;
     }
     // Simulate sending OTP
-    console.log("Sending OTP to:", email);
+    console.log("Sending OTP to:", formData.email);
     setStep(2);
     setSuccess("OTP sent to your email address.");
   };
@@ -26,12 +36,12 @@ const PasswordReset: React.FC = () => {
   const handleOtpSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!otp) {
+    if (!formData.otp) {
       setError("Please enter the OTP.");
       return;
     }
     // Simulate OTP verification
-    if (otp === "123456") {
+    if (formData.otp === "123456") {
       // In a real app, this would be validated against a server
       setStep(3);
       setSuccess("OTP verified successfully.");
@@ -43,20 +53,20 @@ const PasswordReset: React.FC = () => {
   const handlePasswordReset = (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
-    if (!newPassword || !confirmPassword) {
+    if (!formData.newPassword || !formData.confirmPassword) {
       setError("Please enter and confirm your new password.");
       return;
     }
-    if (newPassword !== confirmPassword) {
+    if (formData.newPassword !== formData.confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
-    if (newPassword.length < 8) {
+    if (formData.newPassword.length < 8) {
       setError("Password must be at least 8 characters long.");
       return;
     }
     // Simulate password reset
-    console.log("Resetting password for:", email);
+    console.log("Resetting password for:", formData.email);
     setStep(4);
     setSuccess("Password reset successfully.");
   };
@@ -81,8 +91,10 @@ const PasswordReset: React.FC = () => {
                 <input
                   type="email"
                   id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
                   className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Enter your email"
                   required
@@ -115,8 +127,11 @@ const PasswordReset: React.FC = () => {
                 <input
                   type="text"
                   id="otp"
-                  value={otp}
-                  onChange={(e) => setOtp(e.target.value)}
+                  value={formData.otp}
+                  // onChange={(e) => setOtp(e.target.value)}
+                  onChange={(e) =>
+                    setFormData({ ...formData, otp: e.target.value })
+                  }
                   className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Enter OTP"
                   required
@@ -149,8 +164,10 @@ const PasswordReset: React.FC = () => {
                 <input
                   type="password"
                   id="newPassword"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
+                  value={formData.newPassword}
+                  onChange={(e) =>
+                    setFormData({ ...formData, newPassword: e.target.value })
+                  }
                   className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Enter new password"
                   required
@@ -172,8 +189,13 @@ const PasswordReset: React.FC = () => {
                 <input
                   type="password"
                   id="confirmPassword"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={formData.confirmPassword}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      confirmPassword: e.target.value,
+                    })
+                  }
                   className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Confirm new password"
                   required
@@ -213,9 +235,10 @@ const PasswordReset: React.FC = () => {
   return (
     <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-3xl font-bold text-green-800 text-center mb-6">
-          Reset Password
-        </h2>
+        <div className="relative mb-6 flex items-center justify-center">
+          <BackButton OnClick={() => navigate("/")} />
+          <h2 className="text-3xl font-bold text-green-800">Reset Password</h2>
+        </div>
         {error && (
           <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded flex items-center">
             <AlertCircle className="mr-2" size={18} />

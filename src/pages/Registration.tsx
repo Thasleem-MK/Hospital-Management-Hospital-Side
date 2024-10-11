@@ -8,6 +8,10 @@ import {
   CheckCircle,
   X,
 } from "lucide-react";
+import { BackButton, FormInput } from "../Components/Commen";
+import { Link, useNavigate } from "react-router-dom";
+import { apiClient } from "../Components/Axios";
+import { errorToast, successToast } from "../Components/Toastify";
 
 const HospitalRegistration: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -20,8 +24,10 @@ const HospitalRegistration: React.FC = () => {
   });
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
+  const [generateOtp, setGenerateOtp] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [showOtpPopup, setShowOtpPopup] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -55,16 +61,50 @@ const HospitalRegistration: React.FC = () => {
     if (validateForm()) {
       if (!otpSent) {
         // Simulating OTP send
-        setOtpSent(true);
-        setShowOtpPopup(true);
-        // In a real application, you would call an API to send the OTP here
-        console.log("OTP sent to", formData.email);
+        const randomSixDigit = Math.floor(
+          100000 + Math.random() * 900000
+        ).toString();
+        setGenerateOtp(randomSixDigit);
+        await apiClient
+          .post(
+            "/api/email",
+            {
+              from: "hostahelthcare@gmail.com",
+              to: formData.email,
+              subject: "OTP VERIFICATION",
+              text: `Otp for Hosta registration is ${randomSixDigit}`,
+            },
+            { withCredentials: true }
+          )
+          .then(() => {
+            setOtpSent(true);
+            setShowOtpPopup(true);
+          })
+          .catch((err) => console.log(err));
       } else {
-        // Simulating OTP verification and form submission
-        console.log("Form submitted:", formData);
-        // In a real application, you would call an API to verify OTP and submit the form here
-        alert("Registration successful!");
-        setShowOtpPopup(false);
+        if (otp === generateOtp) {
+          await apiClient
+            .post(
+              "/api/hospital/registration",
+              {
+                name: formData.name,
+                address: formData.address,
+                password: formData.password,
+                phone: formData.mobile,
+                email: formData.email,
+              },
+              { withCredentials: true }
+            )
+            .then((result) => {
+              successToast(result.data.message);
+            })
+            .catch((err) => {
+              errorToast(err.response.data.message);
+            });
+          setShowOtpPopup(false);
+        } else {
+          errorToast("Wrong OTP, please try again!");
+        }
       }
     }
   };
@@ -72,9 +112,12 @@ const HospitalRegistration: React.FC = () => {
   return (
     <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
-        <h2 className="text-3xl font-bold text-green-800 text-center mb-6">
-          Hospital Registration
-        </h2>
+        <div className="relative mb-6 flex items-center justify-center">
+          <BackButton OnClick={() => navigate("/")} />
+          <h2 className="text-3xl font-bold text-green-800">
+            Hospital Registration
+          </h2>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label
@@ -88,13 +131,12 @@ const HospitalRegistration: React.FC = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
                 size={18}
               />
-              <input
-                type="text"
+              <FormInput
                 id="name"
                 name="name"
+                type="text"
                 value={formData.name}
                 onChange={handleChange}
-                className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Enter hospital name"
               />
             </div>
@@ -114,13 +156,12 @@ const HospitalRegistration: React.FC = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
                 size={18}
               />
-              <input
+              <FormInput
                 type="email"
                 id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
-                className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Enter email address"
               />
             </div>
@@ -140,13 +181,12 @@ const HospitalRegistration: React.FC = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
                 size={18}
               />
-              <input
+              <FormInput
                 type="tel"
                 id="mobile"
                 name="mobile"
                 value={formData.mobile}
                 onChange={handleChange}
-                className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Enter mobile number"
               />
             </div>
@@ -192,13 +232,12 @@ const HospitalRegistration: React.FC = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
                 size={18}
               />
-              <input
+              <FormInput
                 type="password"
                 id="password"
-                name="password"
                 value={formData.password}
+                name="password"
                 onChange={handleChange}
-                className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Enter password"
               />
             </div>
@@ -218,13 +257,12 @@ const HospitalRegistration: React.FC = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
                 size={18}
               />
-              <input
+              <FormInput
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleChange}
-                className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Confirm password"
               />
             </div>
@@ -241,6 +279,17 @@ const HospitalRegistration: React.FC = () => {
             {otpSent ? "Verify OTP & Register" : "Send OTP"}
           </button>
         </form>
+        <div className="mt-6 text-center">
+          <p className="text-sm text-green-700">
+            Have an account?{" "}
+            <Link
+              to="/login"
+              className="font-medium text-green-600 hover:text-green-500"
+            >
+              Login here
+            </Link>
+          </p>
+        </div>
       </div>
 
       {showOtpPopup && (
@@ -264,11 +313,10 @@ const HospitalRegistration: React.FC = () => {
                 className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
                 size={18}
               />
-              <input
+              <FormInput
                 type="text"
                 value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-                className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                onChange={(e: any) => setOtp(e.target.value)}
                 placeholder="Enter OTP"
               />
             </div>
