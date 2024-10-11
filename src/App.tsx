@@ -5,6 +5,9 @@ import HospitalLogin from "./pages/Login";
 import PasswordReset from "./pages/PasswordReset";
 import HospitalHomePage from "./pages/Home";
 import HospitalDashboard from "./pages/HospitalDashboard";
+import DoctorManagement from "./pages/Doctors";
+import SpecialtyManagement from "./pages/Specialty";
+import AppointmentsManagement from "./pages/Appointment";
 
 function App() {
   return (
@@ -15,6 +18,9 @@ function App() {
         <Route path="/login" element={<HospitalLogin />} />
         <Route path="/newpassword" element={<PasswordReset />} />
         <Route path="/dashboard" element={<HospitalDashboard />} />
+        <Route path="/doctors" element={<DoctorManagement />} />
+        <Route path="/specialties" element={<SpecialtyManagement />} />
+        <Route path="/appointments" element={<AppointmentsManagement />} />
       </Routes>
     </div>
   );
