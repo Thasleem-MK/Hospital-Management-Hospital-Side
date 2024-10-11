@@ -1,11 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Check,
-  X,
-  Bell,
-} from "lucide-react";
+import React, { useState } from "react";
+import { ChevronLeft, ChevronRight, Check, X, Bell } from "lucide-react";
 
 // Types
 interface Appointment {
@@ -70,33 +64,33 @@ const AppointmentsManagement: React.FC = () => {
 
   const appointmentsPerPage = 5;
 
-//   useEffect(() => {
-//     // Simulating new appointment notifications
-//     const interval = setInterval(() => {
-//       const randomAppointment: Appointment = {
-//         id: `${Date.now()}`,
-//         customerName: `Customer ${Math.floor(Math.random() * 100)}`,
-//         specialtyName: [
-//           "Cardiology",
-//           "Pediatrics",
-//           "Orthopedics",
-//           "Dermatology",
-//         ][Math.floor(Math.random() * 4)],
-//         doctorName: `Dr. ${
-//           ["Smith", "Johnson", "Williams", "Davis"][
-//             Math.floor(Math.random() * 4)
-//           ]
-//         }`,
-//         dateTime: new Date(
-//           Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000
-//         ).toISOString(),
-//         status: "pending",
-//       };
-//       setNewAppointment(randomAppointment);
-//     }, 30000); // New appointment every 30 seconds
+  //   useEffect(() => {
+  //     // Simulating new appointment notifications
+  //     const interval = setInterval(() => {
+  //       const randomAppointment: Appointment = {
+  //         id: `${Date.now()}`,
+  //         customerName: `Customer ${Math.floor(Math.random() * 100)}`,
+  //         specialtyName: [
+  //           "Cardiology",
+  //           "Pediatrics",
+  //           "Orthopedics",
+  //           "Dermatology",
+  //         ][Math.floor(Math.random() * 4)],
+  //         doctorName: `Dr. ${
+  //           ["Smith", "Johnson", "Williams", "Davis"][
+  //             Math.floor(Math.random() * 4)
+  //           ]
+  //         }`,
+  //         dateTime: new Date(
+  //           Date.now() + Math.random() * 7 * 24 * 60 * 60 * 1000
+  //         ).toISOString(),
+  //         status: "pending",
+  //       };
+  //       setNewAppointment(randomAppointment);
+  //     }, 30000); // New appointment every 30 seconds
 
-//     return () => clearInterval(interval);
-//   }, []);
+  //     return () => clearInterval(interval);
+  //   }, []);
 
   const filterAppointments = (
     status: "all" | "pending" | "accepted" | "declined"
@@ -149,7 +143,6 @@ const AppointmentsManagement: React.FC = () => {
       setNewAppointment(null);
     }
   };
-
 
   return (
     <div className="container mx-auto px-4 py-8">
