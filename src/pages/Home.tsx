@@ -47,13 +47,13 @@ const HospitalHomePage: React.FC = () => {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="text-4xl font-bold text-green-800 text-center mb-8">
-          Welcome to MediConnect for Hospitals
+          Welcome to Hosta for Hospitals
         </h1>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-2xl font-semibold text-green-700 mb-4">
-              Why Join MediConnect?
+              Why Join Hosta?
             </h2>
             <ul className="space-y-2 text-green-600">
               <li className="flex items-center">
@@ -93,11 +93,11 @@ const HospitalHomePage: React.FC = () => {
             Ready to Get Started?
           </h2>
           <p className="text-green-600 mb-6">
-            Join MediConnect today and connect with patients looking for quality
+            Join Hosta today and connect with patients looking for quality
             healthcare.
           </p>
           <Link
-            to="/signup"
+            to="/registration"
             className="bg-green-600 text-white hover:bg-green-700 px-6 py-3 rounded-md text-lg font-medium inline-flex items-center"
           >
             Sign Up Now
@@ -145,7 +145,7 @@ const HospitalHomePage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-semibold">MediConnect</h3>
+              <h3 className="text-lg font-semibold">Hosta</h3>
               <p className="text-sm">Connecting Hospitals and Patients</p>
             </div>
             <div className="flex space-x-4">
@@ -161,7 +161,7 @@ const HospitalHomePage: React.FC = () => {
             </div>
           </div>
           <div className="mt-4 text-center text-sm">
-            &copy; {new Date().getFullYear()} MediConnect. All rights reserved.
+            &copy; {new Date().getFullYear()} Hosta. All rights reserved.
           </div>
         </div>
       </footer>

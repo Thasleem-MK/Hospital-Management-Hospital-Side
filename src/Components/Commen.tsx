@@ -19,13 +19,17 @@ export const FormInput = ({
   value,
   onChange,
   placeholder,
+  disabled,
+  className,
 }: {
   type?: string;
   id?: string;
   name?: string;
   value: any;
-  onChange: any;
+  onChange?: any;
   placeholder: string;
+  disabled?: boolean;
+  className?: string;
 }) => {
   return (
     <input
@@ -34,7 +38,8 @@ export const FormInput = ({
       name={name}
       value={value}
       onChange={onChange}
-      className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+      disabled={disabled}
+      className={`pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 ${className}`}
       placeholder={placeholder}
       required
     />

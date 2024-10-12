@@ -8,6 +8,7 @@ import HospitalDashboard from "./pages/HospitalDashboard";
 import DoctorManagement from "./pages/Doctors";
 import SpecialtyManagement from "./pages/Specialty";
 import AppointmentsManagement from "./pages/Appointment";
+import HospitalProfile from "./pages/Profile";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/doctors" element={<DoctorManagement />} />
         <Route path="/specialties" element={<SpecialtyManagement />} />
         <Route path="/appointments" element={<AppointmentsManagement />} />
+        <Route path="/profile" element={<HospitalProfile />} />
       </Routes>
     </div>
   );

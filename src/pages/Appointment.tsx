@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { ChevronLeft, ChevronRight, Check, X, Bell } from "lucide-react";
+import { BackButton } from "../Components/Commen";
+import { useNavigate } from "react-router-dom";
 
 // Types
 interface Appointment {
@@ -61,6 +63,7 @@ const AppointmentsManagement: React.FC = () => {
   const [newAppointment, setNewAppointment] = useState<Appointment | null>(
     null
   );
+  const navigate = useNavigate();
 
   const appointmentsPerPage = 5;
 
@@ -146,9 +149,12 @@ const AppointmentsManagement: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-green-800 mb-6">
-        Appointments Management
-      </h1>
+      <div className="relative mb-6 flex items-center justify-center">
+        <BackButton OnClick={() => navigate("/Dashboard")} />
+        <h1 className="text-3xl font-bold text-green-800">
+          Appointments Management
+        </h1>
+      </div>
 
       {newAppointment && (
         <div className="mb-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded-md">

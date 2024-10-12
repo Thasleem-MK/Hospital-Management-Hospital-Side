@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Mail, Lock, CheckCircle, AlertCircle, ArrowLeft } from "lucide-react";
 import { BackButton } from "../Components/Commen";
 import { useNavigate } from "react-router-dom";
+import { apiClient } from "../Components/Axios";
 
 const PasswordReset: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -10,13 +11,10 @@ const PasswordReset: React.FC = () => {
     newPassword: "",
     confirmPassword: "",
   });
-  // const [email, setEmail] = useState("");
-  // const [otp, setOtp] = useState("");
-  // const [newPassword, setNewPassword] = useState("");
-  // const [confirmPassword, setConfirmPassword] = useState("");
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [randomNumber, setReandomNumber] = useState("");
 
   const navigate = useNavigate();
 
@@ -28,9 +26,24 @@ const PasswordReset: React.FC = () => {
       return;
     }
     // Simulate sending OTP
-    console.log("Sending OTP to:", formData.email);
-    setStep(2);
-    setSuccess("OTP sent to your email address.");
+    const generateOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    setReandomNumber(generateOtp);
+    apiClient
+      .post(
+        "/api/email",
+        {
+          from: "hostahelthcare@gmail.com",
+          to: formData.email,
+          subject: "Reset Password",
+          text: `Otp for reseting your password is ${generateOtp}`,
+        },
+        { withCredentials: true }
+      )
+      .then(() => {
+        setStep(2);
+        setSuccess("OTP sent to your email address.");
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleOtpSubmit = (e: React.FormEvent) => {
@@ -41,7 +54,7 @@ const PasswordReset: React.FC = () => {
       return;
     }
     // Simulate OTP verification
-    if (formData.otp === "123456") {
+    if (formData.otp === randomNumber) {
       // In a real app, this would be validated against a server
       setStep(3);
       setSuccess("OTP verified successfully.");
@@ -66,9 +79,20 @@ const PasswordReset: React.FC = () => {
       return;
     }
     // Simulate password reset
-    console.log("Resetting password for:", formData.email);
-    setStep(4);
-    setSuccess("Password reset successfully.");
+    apiClient
+      .post(
+        "/api/hospital/password",
+        {
+          email: formData.email,
+          password: formData.newPassword,
+        },
+        { withCredentials: true }
+      )
+      .then(() => {
+        setStep(4);
+        setSuccess("Password reset successfully.");
+      })
+      .catch((err) => console.log(err));
   };
 
   const renderStep = () => {

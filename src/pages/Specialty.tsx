@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Search, Plus, Edit, Trash2, X } from "lucide-react";
-import { BackButton } from "../Components/Commen";
-import { useNavigate } from "react-router-dom";
+import { Search, Plus, Edit, Trash2, X, ArrowLeft } from "lucide-react";
 
 // Types based on your MongoDB schema
 interface Doctor {
@@ -18,6 +16,7 @@ interface Specialty {
   name: string;
   description: string;
   department_info: string;
+  phone: string; // Add this line
   doctors: Doctor[];
 }
 
@@ -28,6 +27,7 @@ const mockSpecialties: Specialty[] = [
     name: "Cardiology",
     description: "Deals with disorders of the heart and blood vessels",
     department_info: "Located in Building A, 3rd Floor",
+    phone: "123-456-7890", // Add this line
     doctors: [
       {
         id: "1",
@@ -52,6 +52,7 @@ const mockSpecialties: Specialty[] = [
     name: "Pediatrics",
     description: "Provides medical care for infants, children, and adolescents",
     department_info: "Located in Building B, 2nd Floor",
+    phone: "098-765-4321", // Add this line
     doctors: [
       {
         id: "3",
@@ -64,6 +65,17 @@ const mockSpecialties: Specialty[] = [
     ],
   },
 ];
+
+const BackButton = ({ onClick }: { onClick: () => void }) => {
+  return (
+    <button
+      onClick={onClick}
+      className="mr-4 p-2 bg-green-100 text-green-600 rounded-full hover:bg-green-200 transition-colors absolute left-4 top-4"
+    >
+      <ArrowLeft className="h-6 w-6" />
+    </button>
+  );
+};
 
 const SpecialtyManagement: React.FC = () => {
   const [specialties, setSpecialties] = useState<Specialty[]>(mockSpecialties);
@@ -78,7 +90,6 @@ const SpecialtyManagement: React.FC = () => {
   useEffect(() => {
     filterSpecialties();
   }, [searchTerm]);
-  const navigate = useNavigate();
 
   const filterSpecialties = () => {
     const filtered = specialties.filter(
@@ -117,12 +128,17 @@ const SpecialtyManagement: React.FC = () => {
     setFilteredSpecialties(updatedSpecialties);
   };
 
+  const goBack = () => {
+    // Implement your navigation logic here
+    console.log("Going back to previous page");
+  };
+
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="relative mb-6 flex items-center justify-center">
-        <BackButton OnClick={() => navigate("/Dashboard")} />
-        <h1 className="text-3xl font-bold text-green-800">Doctor Management</h1>
-      </div>
+    <div className="container mx-auto px-4 py-8 relative">
+      <BackButton onClick={goBack} />
+      <h1 className="text-3xl font-bold text-green-800 mb-6 mt-12">
+        Specialty Management
+      </h1>
 
       <div className="mb-6 flex flex-wrap items-center gap-4">
         <div className="relative flex-grow">
@@ -180,8 +196,11 @@ const SpecialtyList: React.FC<{
             {specialty.name}
           </h2>
           <p className="text-green-600 mb-4">{specialty.description}</p>
-          <p className="text-sm text-green-700 mb-4">
+          <p className="text-sm text-green-700 mb-2">
             {specialty.department_info}
+          </p>
+          <p className="text-sm text-green-700 mb-4">
+            Phone: {specialty.phone}
           </p>
           <h3 className="font-semibold text-green-700 mb-2">Doctors:</h3>
           <ul className="space-y-1 mb-4">
@@ -222,6 +241,7 @@ const SpecialtyForm: React.FC<{
       name: "",
       description: "",
       department_info: "",
+      phone: "", // Add this line
       doctors: [],
     }
   );
@@ -291,6 +311,23 @@ const SpecialtyForm: React.FC<{
               id="department_info"
               name="department_info"
               value={formData.department_info}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
+              required
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="phone"
+              className="block text-sm font-medium text-green-700"
+            >
+              Phone
+            </label>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              value={formData.phone}
               onChange={handleChange}
               className="mt-1 block w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
               required
@@ -381,6 +418,7 @@ const DoctorSchedule: React.FC<{
               >
                 <option value="">Select day</option>
                 <option value="Monday">Monday</option>
+
                 <option value="Tuesday">Tuesday</option>
                 <option value="Wednesday">Wednesday</option>
                 <option value="Thursday">Thursday</option>
