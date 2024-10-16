@@ -56,7 +56,7 @@ const HospitalDashboard: React.FC = () => {
             <div className="bg-white p-8 rounded-lg shadow-md mb-6">
               <div className="flex flex-col items-center mb-6">
                 <img
-                  src={image}
+                  src={image.imageUrl}
                   alt={name}
                   className="w-32 h-32 rounded-full object-cover mb-4 border border-green-950"
                 />

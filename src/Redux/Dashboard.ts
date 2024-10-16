@@ -11,7 +11,7 @@ const InitialState = {
   longitude: null,
   password: "",
   about: "",
-  image: "", // Make sure to include image in the state
+  image: { imageUrl: "", deleteHash: "" },
   working_hours: [
     {
       day: "Monday",

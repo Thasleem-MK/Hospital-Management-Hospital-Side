@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Search, Plus, Edit, Trash2, X, ArrowLeft } from "lucide-react";
+import { DeleteConfirmationDialog } from "../Components/DeleteConfirmation";
+import { useNavigate } from "react-router-dom";
 
 // Types based on your MongoDB schema
 interface Doctor {
@@ -16,7 +18,7 @@ interface Specialty {
   name: string;
   description: string;
   department_info: string;
-  phone: string; // Add this line
+  phone: string;
   doctors: Doctor[];
 }
 
@@ -86,6 +88,7 @@ const SpecialtyManagement: React.FC = () => {
   const [editingSpecialty, setEditingSpecialty] = useState<Specialty | null>(
     null
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     filterSpecialties();
@@ -128,14 +131,9 @@ const SpecialtyManagement: React.FC = () => {
     setFilteredSpecialties(updatedSpecialties);
   };
 
-  const goBack = () => {
-    // Implement your navigation logic here
-    console.log("Going back to previous page");
-  };
-
   return (
     <div className="container mx-auto px-4 py-8 relative">
-      <BackButton onClick={goBack} />
+      <BackButton onClick={()=>{navigate("/dashboard")}} />
       <h1 className="text-3xl font-bold text-green-800 mb-6 mt-12">
         Specialty Management
       </h1>
@@ -188,6 +186,8 @@ const SpecialtyList: React.FC<{
   onEdit: (specialty: Specialty) => void;
   onDelete: (id: string) => void;
 }> = ({ specialties, onEdit, onDelete }) => {
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [selectedSpecialty, setSelectedSpecialty] = useState("");
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {specialties.map((specialty) => (
@@ -218,11 +218,26 @@ const SpecialtyList: React.FC<{
               <Edit size={20} />
             </button>
             <button
-              onClick={() => onDelete(specialty.id)}
+              onClick={() => {
+                setIsDeleteOpen(true);
+                setSelectedSpecialty(specialty.id);
+              }}
               className="text-red-600 hover:text-red-800"
             >
               <Trash2 size={20} />
             </button>
+            {isDeleteOpen && (
+              <DeleteConfirmationDialog
+                onCancel={() => {
+                  setIsDeleteOpen(false);
+                  setSelectedSpecialty("");
+                }}
+                onConfirm={() => {
+                  onDelete(selectedSpecialty);
+                  setIsDeleteOpen(false);
+                }}
+              />
+            )}
           </div>
         </div>
       ))}
@@ -241,7 +256,7 @@ const SpecialtyForm: React.FC<{
       name: "",
       description: "",
       department_info: "",
-      phone: "", // Add this line
+      phone: "",
       doctors: [],
     }
   );

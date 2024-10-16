@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setHospitalData } from "../Redux/Dashboard";
 import { RootState } from "../Redux/Store";
+import { deleteImage, uploadImage } from "../Components/HandlePhotoChange";
 
 const HospitalProfile: React.FC = () => {
   const dispatch = useDispatch();
@@ -92,20 +93,23 @@ const HospitalProfile: React.FC = () => {
     }
   };
 
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    console.log(file);
+    if (file) {
+      // const reader = new FileReader();
+      // reader.onloadend = () => {
+      //   const profilePhoto = reader.result as string;
+      //   console.log("Profile", profilePhoto);
 
-    // if (file) {
-    //   const reader = new FileReader();
-    //   reader.onloadend = () => {
-    //     setProfile((prev) => ({
-    //       ...prev,
-    //       profilePhoto: reader.result as string,
-    //     }));
-    //   };
-    //   reader.readAsDataURL(file);
-    // }
+      //   dispatch(setHospitalData({ image: profilePhoto }));
+      // };
+      // reader.readAsDataURL(file);
+      if (image.deleteHash) {
+        await deleteImage(image.deleteHash);
+      }
+      const result = await uploadImage(file);
+      console.log(result);
+    }
   };
 
   // const validateForm = () => {
@@ -150,6 +154,7 @@ const HospitalProfile: React.FC = () => {
           workingHours: working_hours,
           emergencyContact: emergencyContact,
           about: about,
+          // image: image,
         },
         { withCredentials: true }
       )
@@ -160,7 +165,7 @@ const HospitalProfile: React.FC = () => {
       })
       .catch((err) => {
         console.log(err);
-        errorToast("Something went wrong while updating");
+        errorToast(err.response.data.message.message);
       });
   };
 
@@ -168,7 +173,7 @@ const HospitalProfile: React.FC = () => {
     <div className="min-h-screen bg-green-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
         <div className="relative mb-6 flex items-center justify-center">
-          <BackButton OnClick={() => navigate("/")} />
+          <BackButton OnClick={() => navigate("/dashboard")} />
           <h2 className="text-3xl font-bold text-green-800">
             Hospital Profile
           </h2>
@@ -176,7 +181,7 @@ const HospitalProfile: React.FC = () => {
         <div className="mb-6 flex justify-center">
           <div className="relative">
             <img
-              src={image}
+              src={image.imageUrl}
               alt={name}
               className="w-32 h-32 rounded-full object-cover border border-green-900"
             />
