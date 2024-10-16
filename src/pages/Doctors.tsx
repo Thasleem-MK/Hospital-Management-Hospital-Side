@@ -527,114 +527,114 @@
 // export default DoctorManagement;
 
 
-import React, { useState, useEffect } from "react";
+// import React, { useState, useEffect } from "react";
 
-interface ConsultingSchedule {
-  day: string;
-  startTime: string;
-  endTime: string;
-  isBookingDisabled: boolean;
-}
+// interface ConsultingSchedule {
+//   day: string;
+//   startTime: string;
+//   endTime: string;
+//   isBookingDisabled: boolean;
+// }
 
-interface Doctor {
-  id: number;
-  name: string;
-  specialty: string;
-  consulting: ConsultingSchedule[];
-}
+// interface Doctor {
+//   id: number;
+//   name: string;
+//   specialty: string;
+//   consulting: ConsultingSchedule[];
+// }
 
-interface DoctorFormProps {
-  doctor: Doctor | null;
-  onSave: (doctor: Doctor) => void;
-  onCancel: () => void;
-  specialties: string[];
-}
+// interface DoctorFormProps {
+//   doctor: Doctor | null;
+//   onSave: (doctor: Doctor) => void;
+//   onCancel: () => void;
+//   specialties: string[];
+// }
 
-const DoctorForm: React.FC<DoctorFormProps> = ({
-  doctor,
-  onSave,
-  onCancel,
-  specialties,
-}) => {
-  const [name, setName] = useState(doctor ? doctor.name : "");
-  const [specialty, setSpecialty] = useState(doctor ? doctor.specialty : "");
-  const [consulting, setConsulting] = useState<ConsultingSchedule[]>(
-    doctor
-      ? doctor.consulting
-      : [
-          {
-            day: "Monday",
-            startTime: "09:00",
-            endTime: "17:00",
-            isBookingDisabled: false,
-          },
-        ]
-  );
+// const DoctorManagement: React.FC<DoctorFormProps> = ({
+//   doctor,
+//   onSave,
+//   onCancel,
+//   specialties,
+// }) => {
+//   const [name, setName] = useState(doctor ? doctor.name : "");
+//   const [specialty, setSpecialty] = useState(doctor ? doctor.specialty : "");
+//   const [consulting, setConsulting] = useState<ConsultingSchedule[]>(
+//     doctor
+//       ? doctor.consulting
+//       : [
+//           {
+//             day: "Monday",
+//             startTime: "09:00",
+//             endTime: "17:00",
+//             isBookingDisabled: false,
+//           },
+//         ]
+//   );
 
-  useEffect(() => {
-    if (doctor) {
-      setName(doctor.name);
-      setSpecialty(doctor.specialty);
-      setConsulting(doctor.consulting);
-    }
-  }, [doctor]);
+//   useEffect(() => {
+//     if (doctor) {
+//       setName(doctor.name);
+//       setSpecialty(doctor.specialty);
+//       setConsulting(doctor.consulting);
+//     }
+//   }, [doctor]);
 
-  const handleSave = () => {
-    const newDoctor = {
-      id: doctor ? doctor.id : Math.random(),
-      name,
-      specialty,
-      consulting,
-    };
-    onSave(newDoctor);
-  };
+//   const handleSave = () => {
+//     const newDoctor = {
+//       id: doctor ? doctor.id : Math.random(),
+//       name,
+//       specialty,
+//       consulting,
+//     };
+//     onSave(newDoctor);
+//   };
 
-  return (
-    <div className="bg-white p-4 border rounded-md shadow-md">
-      <h2 className="text-xl font-semibold mb-4">
-        {doctor ? "Edit Doctor" : "Add Doctor"}
-      </h2>
-      <div className="mb-4">
-        <label className="block mb-1">Name</label>
-        <input
-          type="text"
-          className="w-full border px-3 py-2 rounded-md"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-      </div>
-      <div className="mb-4">
-        <label className="block mb-1">Specialty</label>
-        <select
-          className="w-full border px-3 py-2 rounded-md"
-          value={specialty}
-          onChange={(e) => setSpecialty(e.target.value)}
-        >
-          <option value="">Select Specialty</option>
-          {specialties?.map((specialty) => (
-            <option key={specialty} value={specialty}>
-              {specialty}
-            </option>
-          ))}
-        </select>
-      </div>
-      {/* Consulting schedule can be added here */}
-      <div className="flex justify-end gap-2">
-        <button
-          className="bg-gray-400 text-white px-4 py-2 rounded-md"
-          onClick={onCancel}
-        >
-          Cancel
-        </button>
-        <button
-          className="bg-green-600 text-white px-4 py-2 rounded-md"
-          onClick={handleSave}
-        >
-          Save
-        </button>
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="bg-white p-4 border rounded-md shadow-md">
+//       <h2 className="text-xl font-semibold mb-4">
+//         {doctor ? "Edit Doctor" : "Add Doctor"}
+//       </h2>
+//       <div className="mb-4">
+//         <label className="block mb-1">Name</label>
+//         <input
+//           type="text"
+//           className="w-full border px-3 py-2 rounded-md"
+//           value={name}
+//           onChange={(e) => setName(e.target.value)}
+//         />
+//       </div>
+//       <div className="mb-4">
+//         <label className="block mb-1">Specialty</label>
+//         <select
+//           className="w-full border px-3 py-2 rounded-md"
+//           value={specialty}
+//           onChange={(e) => setSpecialty(e.target.value)}
+//         >
+//           <option value="">Select Specialty</option>
+//           {specialties?.map((specialty) => (
+//             <option key={specialty} value={specialty}>
+//               {specialty}
+//             </option>
+//           ))}
+//         </select>
+//       </div>
+//       {/* Consulting schedule can be added here */}
+//       <div className="flex justify-end gap-2">
+//         <button
+//           className="bg-gray-400 text-white px-4 py-2 rounded-md"
+//           onClick={onCancel}
+//         >
+//           Cancel
+//         </button>
+//         <button
+//           className="bg-green-600 text-white px-4 py-2 rounded-md"
+//           onClick={handleSave}
+//         >
+//           Save
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
 
-export default DoctorForm;
+// export default DoctorManagement;
