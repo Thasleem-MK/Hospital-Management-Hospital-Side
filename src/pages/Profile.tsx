@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setHospitalData } from "../Redux/Dashboard";
 import { RootState } from "../Redux/Store";
 import { deleteImage, uploadImage } from "../Components/HandlePhotoChange";
+import { fetchData } from "../Components/FetchData";
 
 const HospitalProfile: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,20 +38,8 @@ const HospitalProfile: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchProfile();
+    fetchData(dispatch,setHospitalData);
   }, []);
-
-  const fetchProfile = async () => {
-    await apiClient
-      .get("/api/hospital/details", {
-        withCredentials: true,
-      })
-      .then((result) => {
-        console.log(result.data.data);
-        dispatch(setHospitalData(result.data.data));
-      })
-      .catch((err) => console.log(err));
-  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

@@ -1,139 +1,95 @@
 import React, { useState, useEffect } from "react";
-import { Search, Plus, Edit, Trash2, X, ArrowLeft } from "lucide-react";
+import { Search, Plus, Edit, Trash2, X, Clock } from "lucide-react";
 import { DeleteConfirmationDialog } from "../Components/DeleteConfirmation";
 import { useNavigate } from "react-router-dom";
-
-// Types based on your MongoDB schema
-interface Doctor {
-  id: string;
-  name: string;
-  consulting: {
-    day: string;
-    time: string;
-  }[];
-}
-
-interface Specialty {
-  id: string;
-  name: string;
-  description: string;
-  department_info: string;
-  phone: string;
-  doctors: Doctor[];
-}
-
-// Mock data for specialties (replace with actual API calls in a real application)
-const mockSpecialties: Specialty[] = [
-  {
-    id: "1",
-    name: "Cardiology",
-    description: "Deals with disorders of the heart and blood vessels",
-    department_info: "Located in Building A, 3rd Floor",
-    phone: "123-456-7890", // Add this line
-    doctors: [
-      {
-        id: "1",
-        name: "Dr. John Doe",
-        consulting: [
-          { day: "Monday", time: "09:00 AM - 01:00 PM" },
-          { day: "Wednesday", time: "02:00 PM - 06:00 PM" },
-        ],
-      },
-      {
-        id: "2",
-        name: "Dr. Jane Smith",
-        consulting: [
-          { day: "Tuesday", time: "10:00 AM - 02:00 PM" },
-          { day: "Thursday", time: "01:00 PM - 05:00 PM" },
-        ],
-      },
-    ],
-  },
-  {
-    id: "2",
-    name: "Pediatrics",
-    description: "Provides medical care for infants, children, and adolescents",
-    department_info: "Located in Building B, 2nd Floor",
-    phone: "098-765-4321", // Add this line
-    doctors: [
-      {
-        id: "3",
-        name: "Dr. Mike Johnson",
-        consulting: [
-          { day: "Monday", time: "02:00 PM - 06:00 PM" },
-          { day: "Friday", time: "09:00 AM - 01:00 PM" },
-        ],
-      },
-    ],
-  },
-];
-
-const BackButton = ({ onClick }: { onClick: () => void }) => {
-  return (
-    <button
-      onClick={onClick}
-      className="mr-4 p-2 bg-green-100 text-green-600 rounded-full hover:bg-green-200 transition-colors absolute left-4 top-4"
-    >
-      <ArrowLeft className="h-6 w-6" />
-    </button>
-  );
-};
+import { BackButton } from "../Components/Commen";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../Redux/Store";
+import { Doctor, setHospitalData, Specialty } from "../Redux/Dashboard";
+import { fetchData } from "../Components/FetchData";
+import { apiClient } from "../Components/Axios";
+import { errorToast, successToast } from "../Components/Toastify";
 
 const SpecialtyManagement: React.FC = () => {
-  const [specialties, setSpecialties] = useState<Specialty[]>(mockSpecialties);
+  const { specialties, _id } = useSelector(
+    (state: RootState) => state.Dashboard
+  );
   const [filteredSpecialties, setFilteredSpecialties] =
-    useState<Specialty[]>(mockSpecialties);
+    useState<Specialty[]>(specialties);
   const [searchTerm, setSearchTerm] = useState("");
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingSpecialty, setEditingSpecialty] = useState<Specialty | null>(
     null
   );
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    fetchData(dispatch, setHospitalData);
+  }, []);
 
   useEffect(() => {
     filterSpecialties();
-  }, [searchTerm]);
+  }, [searchTerm, specialties]);
 
   const filterSpecialties = () => {
     const filtered = specialties.filter(
       (specialty) =>
         specialty.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        specialty.description.toLowerCase().includes(searchTerm.toLowerCase())
+        specialty?.description.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredSpecialties(filtered);
   };
 
-  const handleAddSpecialty = (newSpecialty: Omit<Specialty, "id">) => {
-    const updatedSpecialties = [
-      ...specialties,
-      { ...newSpecialty, id: String(specialties.length + 1) },
-    ];
-    setSpecialties(updatedSpecialties);
-    setFilteredSpecialties(updatedSpecialties);
-    setIsFormOpen(false);
+  // Add a new specialty.
+  const handleAddSpecialty = async (newSpecialty: Omit<Specialty, "id">) => {
+    await apiClient
+      .post(
+        `/api//hospital/specialty/${_id}`,
+        { ...newSpecialty },
+        { withCredentials: true }
+      )
+      .then((result) => {
+        console.log(result.data.data);
+        dispatch(setHospitalData({ specialties: result.data.data }));
+        setIsFormOpen(false);
+        successToast("Added new specialty");
+      })
+      .catch((err) => errorToast(err.response.data.message));
   };
 
-  const handleUpdateSpecialty = (updatedSpecialty: Specialty) => {
-    const updatedSpecialties = specialties.map((specialty) =>
-      specialty.id === updatedSpecialty.id ? updatedSpecialty : specialty
-    );
-    setSpecialties(updatedSpecialties);
-    setFilteredSpecialties(updatedSpecialties);
-    setIsFormOpen(false);
-    setEditingSpecialty(null);
+  // Edit a specialty.
+  const handleUpdateSpecialty = async (updatedSpecialty: Specialty) => {
+    await apiClient
+      .put(
+        `/api/hospital/specialty/${_id}`,
+        { ...updatedSpecialty },
+        { withCredentials: true }
+      )
+      .then((result) => {
+        console.log(result.data.data);
+        dispatch(setHospitalData({ specialties: result.data.data }));
+        setIsFormOpen(false);
+        setEditingSpecialty(null);
+        successToast("Added new specialty");
+      })
+      .catch((err) => errorToast(err.response.data.message));
   };
 
-  const handleDeleteSpecialty = (id: string) => {
-    const updatedSpecialties = specialties.filter(
-      (specialty) => specialty.id !== id
-    );
-    setSpecialties(updatedSpecialties);
-    setFilteredSpecialties(updatedSpecialties);
+  const handleDeleteSpecialty = async (name: string) => {
+    await apiClient
+      .delete(`/api/hospital/specialty/${_id}?name=${name}`, {
+        withCredentials: true,
+      })
+      .then((result) => {
+        dispatch(setHospitalData({ specialties: result.data.data }));
+      })
+      .catch((err) => errorToast(err.response.data.message));
   };
 
   return (
     <div className="container mx-auto px-4 py-8 relative">
-      <BackButton onClick={()=>{navigate("/dashboard")}} />
+      <BackButton OnClick={() => navigate("/dashboard")} />
       <h1 className="text-3xl font-bold text-green-800 mb-6 mt-12">
         Specialty Management
       </h1>
@@ -188,6 +144,7 @@ const SpecialtyList: React.FC<{
 }> = ({ specialties, onEdit, onDelete }) => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedSpecialty, setSelectedSpecialty] = useState("");
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {specialties.map((specialty) => (
@@ -207,6 +164,14 @@ const SpecialtyList: React.FC<{
             {specialty.doctors.map((doctor) => (
               <li key={doctor.id} className="text-green-600">
                 {doctor.name}
+                <ul className="ml-4 text-sm">
+                  {doctor.consulting.map((schedule, index) => (
+                    <li key={index}>
+                      {schedule.day}: {schedule.start_time} -{" "}
+                      {schedule.end_time}
+                    </li>
+                  ))}
+                </ul>
               </li>
             ))}
           </ul>
@@ -220,27 +185,27 @@ const SpecialtyList: React.FC<{
             <button
               onClick={() => {
                 setIsDeleteOpen(true);
-                setSelectedSpecialty(specialty.id);
+                setSelectedSpecialty(specialty.name);
               }}
               className="text-red-600 hover:text-red-800"
             >
               <Trash2 size={20} />
             </button>
-            {isDeleteOpen && (
-              <DeleteConfirmationDialog
-                onCancel={() => {
-                  setIsDeleteOpen(false);
-                  setSelectedSpecialty("");
-                }}
-                onConfirm={() => {
-                  onDelete(selectedSpecialty);
-                  setIsDeleteOpen(false);
-                }}
-              />
-            )}
           </div>
         </div>
       ))}
+      {isDeleteOpen && (
+        <DeleteConfirmationDialog
+          onCancel={() => {
+            setIsDeleteOpen(false);
+            setSelectedSpecialty("");
+          }}
+          onConfirm={() => {
+            onDelete(selectedSpecialty);
+            setIsDeleteOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 };
@@ -426,14 +391,16 @@ const DoctorSchedule: React.FC<{
                 value={schedule.day}
                 onChange={(e) => {
                   const newConsulting = [...doctor.consulting];
-                  newConsulting[scheduleIndex].day = e.target.value;
+                  newConsulting[scheduleIndex] = {
+                    ...newConsulting[scheduleIndex],
+                    day: e.target.value,
+                  };
                   updateDoctor(index, { ...doctor, consulting: newConsulting });
                 }}
                 className="border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
               >
                 <option value="">Select day</option>
                 <option value="Monday">Monday</option>
-
                 <option value="Tuesday">Tuesday</option>
                 <option value="Wednesday">Wednesday</option>
                 <option value="Thursday">Thursday</option>
@@ -441,17 +408,42 @@ const DoctorSchedule: React.FC<{
                 <option value="Saturday">Saturday</option>
                 <option value="Sunday">Sunday</option>
               </select>
-              <input
-                type="text"
-                value={schedule.time}
-                onChange={(e) => {
-                  const newConsulting = [...doctor.consulting];
-                  newConsulting[scheduleIndex].time = e.target.value;
-                  updateDoctor(index, { ...doctor, consulting: newConsulting });
-                }}
-                placeholder="e.g., 09:00 AM - 01:00 PM"
-                className="flex-grow border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
-              />
+              <div className="flex items-center space-x-2">
+                <Clock size={20} className="text-green-600" />
+                <input
+                  type="time"
+                  value={schedule.start_time}
+                  onChange={(e) => {
+                    const newConsulting = [...doctor.consulting];
+                    newConsulting[scheduleIndex] = {
+                      ...newConsulting[scheduleIndex],
+                      start_time: e.target.value,
+                    };
+                    updateDoctor(index, {
+                      ...doctor,
+                      consulting: newConsulting,
+                    });
+                  }}
+                  className="border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
+                />
+                <span>-</span>
+                <input
+                  type="time"
+                  value={schedule.end_time}
+                  onChange={(e) => {
+                    const newConsulting = [...doctor.consulting];
+                    newConsulting[scheduleIndex] = {
+                      ...newConsulting[scheduleIndex],
+                      end_time: e.target.value,
+                    };
+                    updateDoctor(index, {
+                      ...doctor,
+                      consulting: newConsulting,
+                    });
+                  }}
+                  className="border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
+                />
+              </div>
               <button
                 type="button"
                 onClick={() => {
@@ -471,7 +463,7 @@ const DoctorSchedule: React.FC<{
             onClick={() => {
               const newConsulting = [
                 ...doctor.consulting,
-                { day: "", time: "" },
+                { day: "", start_time: "", end_time: "" },
               ];
               updateDoctor(index, { ...doctor, consulting: newConsulting });
             }}

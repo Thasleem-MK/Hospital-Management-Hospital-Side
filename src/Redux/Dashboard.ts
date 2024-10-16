@@ -1,6 +1,48 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const InitialState = {
+export interface Doctor {
+  id: string;
+  name: string;
+  consulting: {
+    day: string;
+    start_time: string;
+    end_time: string;
+  }[];
+}
+
+export interface Specialty {
+  id: string;
+  name: string;
+  description: string;
+  department_info: string;
+  phone: string;
+  doctors: Doctor[];
+}
+
+interface InitialStateType {
+  _id: string;
+  name: string;
+  address: string;
+  phone: string;
+  emergencyContact: string;
+  email: string;
+  latitude: number | null;
+  longitude: number | null;
+  password: string;
+  about: string;
+  image: { imageUrl: string; deleteHash: string };
+  working_hours: {
+    day: string;
+    opening_time: string;
+    closing_time: string;
+    is_holiday: boolean;
+  }[];
+  reviews: any[];
+  specialties: Specialty[]; // Type specialties properly here
+  booking: any[];
+}
+
+const InitialState: InitialStateType = {
   _id: "",
   name: "",
   address: "",
