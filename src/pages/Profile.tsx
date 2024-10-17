@@ -100,32 +100,6 @@ const HospitalProfile: React.FC = () => {
     }
   };
 
-  // const validateForm = () => {
-  //   const newErrors: { [key: string]: string } = {};
-  //   if (!profile.name) newErrors.name = "Hospital name is required";
-  //   if (!profile.mobile) newErrors.mobile = "Mobile number is required";
-  //   else if (!/^\d{10}$/.test(profile.mobile))
-  //     newErrors.mobile = "Mobile number must be 10 digits";
-  //   if (!profile.address) newErrors.address = "Address is required";
-  //   if (!profile.latitude) newErrors.latitude = "Latitude is required";
-  //   else if (!/^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/.test(profile.latitude))
-  //     newErrors.latitude = "Invalid latitude format";
-  //   if (!profile.longitude) newErrors.longitude = "Longitude is required";
-  //   else if (
-  //     !/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/.test(
-  //       profile.longitude
-  //     )
-  //   )
-  //     newErrors.longitude = "Invalid longitude format";
-  //   if (!profile.emergencyContact)
-  //     newErrors.emergencyContact = "Emergency contact is required";
-  //   else if (!/^\d{10}$/.test(profile.emergencyContact))
-  //     newErrors.emergencyContact = "Emergency contact must be 10 digits";
-  //   if (!profile.about) newErrors.about = "About section is required";
-  //   setErrors(newErrors);
-  //   return Object.keys(newErrors).length === 0;
-  // };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -268,7 +242,7 @@ const HospitalProfile: React.FC = () => {
                 </div>
                 <FormInput
                   type="tel"
-                  name="mobile"
+                  name="phone"
                   id="mobile"
                   value={phone}
                   onChange={handleChange}
@@ -354,6 +328,7 @@ const HospitalProfile: React.FC = () => {
                 value={latitude}
                 onChange={handleChange}
                 disabled={!isEditing}
+                pattern="/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/"
                 placeholder="Enter latitude"
               />
               {errors.latitude && (
@@ -374,6 +349,7 @@ const HospitalProfile: React.FC = () => {
                 value={longitude}
                 onChange={handleChange}
                 disabled={!isEditing}
+                pattern="/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/"
                 placeholder="Enter longitude"
               />
               {errors.longitude && (
@@ -410,67 +386,7 @@ const HospitalProfile: React.FC = () => {
               <p className="mt-2 text-sm text-red-600">{errors.about}</p>
             )}
           </div>
-          {/* <div>
-            <h3 className="text-lg font-medium text-green-700 mb-3">
-              Working Hours
-            </h3>
-            {working_hours.map(
-              (element: {
-                day: string;
-                opening_time: string;
-                closing_time: string;
-              }) => (
-                <div
-                  key={element?.day}
-                  className="flex items-center space-x-2 mb-2"
-                >
-                  <span className="w-24 text-sm text-green-700">
-                    {element?.day}
-                  </span>
-                  <div className="flex-1 grid grid-cols-2 gap-2">
-                    <div className="relative">
-                      <Clock
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500"
-                        size={18}
-                      />
-                      <input
-                        type="time"
-                        value={element.opening_time}
-                        onChange={(e) =>
-                          handleWorkingHoursChange(
-                            element?.day,
-                            "open",
-                            e.target.value
-                          )
-                        }
-                        disabled={!isEditing}
-                        className="pl-10 shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                    <div className="relative">
-                      <Clock
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-500"
-                        size={18}
-                      />
-                      <input
-                        type="time"
-                        value={element.closing_time}
-                        onChange={(e) =>
-                          handleWorkingHoursChange(
-                            element?.day,
-                            "close",
-                            e.target.value
-                          )
-                        }
-                        disabled={!isEditing}
-                        className="pl-10 shadow-sm focus:ring-green-500 focus:border-green-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-                </div>
-              )
-            )}
-          </div> */}
+
           <div>
             <h3 className="text-lg font-medium text-green-700 mb-3">
               Working Hours

@@ -20,6 +20,7 @@ export const FormInput = ({
   onChange,
   placeholder,
   disabled,
+  pattern,
   className,
 }: {
   type?: string;
@@ -30,6 +31,7 @@ export const FormInput = ({
   placeholder: string;
   disabled?: boolean;
   className?: string;
+  pattern?: string;
 }) => {
   return (
     <input
@@ -41,6 +43,7 @@ export const FormInput = ({
       disabled={disabled}
       className={`pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 ${className}`}
       placeholder={placeholder}
+      pattern={pattern}
       required
     />
   );

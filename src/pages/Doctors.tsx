@@ -39,7 +39,7 @@
 // ];
 
 // const DoctorManagement: React.FC = () => {
-//   const [doctors, setDoctors] = useState<Doctor[]>([]);
+// //   const [doctors, setDoctors] = useState<Doctor[]>([]);
 //   const [filteredDoctors, setFilteredDoctors] = useState<Doctor[]>([]);
 //   const [searchTerm, setSearchTerm] = useState<string>("");
 //   const [selectedSpecialty, setSelectedSpecialty] = useState<string>("");
@@ -53,11 +53,11 @@
 //   const navigate = useNavigate();
 //   const dispatch = useDispatch();
 
-//   // to get all doctors
-//   // const doctors = useSelector((state: RootState) =>
-//   //   state.Dashboard.specialties.flatMap((specialty) => specialty.doctors)
-//   // );
-//   // const { specialties } = useSelector((state: RootState) => state.Dashboard);
+//   to get all doctors
+//   const doctors = useSelector((state: RootState) =>
+//     state.Dashboard.specialties.flatMap((specialty) => specialty.doctors)
+//   );
+//   const { specialties } = useSelector((state: RootState) => state.Dashboard);
 
 //   useEffect(() => {
 //     fetchData(dispatch, setHospitalData);
