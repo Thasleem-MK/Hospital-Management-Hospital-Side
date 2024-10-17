@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setHospitalData } from "../Redux/Dashboard";
 import { RootState } from "../Redux/Store";
-import { deleteImage, uploadImage } from "../Components/HandlePhotoChange";
 import { fetchData } from "../Components/FetchData";
 
 const HospitalProfile: React.FC = () => {
@@ -38,7 +37,7 @@ const HospitalProfile: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchData(dispatch,setHospitalData);
+    fetchData(dispatch, setHospitalData);
   }, []);
 
   const handleChange = (
@@ -85,19 +84,19 @@ const HospitalProfile: React.FC = () => {
   const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      // const reader = new FileReader();
-      // reader.onloadend = () => {
-      //   const profilePhoto = reader.result as string;
-      //   console.log("Profile", profilePhoto);
+      const formData = new FormData();
+      formData.append("image", file);
+      console.log(formData);
 
-      //   dispatch(setHospitalData({ image: profilePhoto }));
-      // };
-      // reader.readAsDataURL(file);
-      if (image.deleteHash) {
-        await deleteImage(image.deleteHash);
-      }
-      const result = await uploadImage(file);
-      console.log(result);
+      await apiClient
+        .post(`/api/hospital/profileImage/${_id}`, formData, {
+          withCredentials: true,
+        })
+        .then((result) => {
+          console.log(result.data.imageUrl);
+          dispatch(setHospitalData({ image: result.data.imageUrl }));
+        })
+        .catch((err) => console.log("err", err));
     }
   };
 
