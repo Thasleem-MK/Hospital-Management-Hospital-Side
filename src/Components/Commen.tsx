@@ -28,7 +28,7 @@ export const FormInput = ({
   name?: string;
   value: any;
   onChange?: any;
-  placeholder: string;
+  placeholder?: string;
   disabled?: boolean;
   className?: string;
   pattern?: string;

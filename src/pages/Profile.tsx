@@ -120,8 +120,7 @@ const HospitalProfile: React.FC = () => {
         },
         { withCredentials: true }
       )
-      .then((result) => {
-        console.log(result);
+      .then(() => {
         successToast("Profile updated successfully");
         setIsEditing(false);
       })
@@ -328,7 +327,7 @@ const HospitalProfile: React.FC = () => {
                 value={latitude}
                 onChange={handleChange}
                 disabled={!isEditing}
-                pattern="/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/"
+                // pattern="/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/"
                 placeholder="Enter latitude"
               />
               {errors.latitude && (
@@ -349,7 +348,7 @@ const HospitalProfile: React.FC = () => {
                 value={longitude}
                 onChange={handleChange}
                 disabled={!isEditing}
-                pattern="/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/"
+                // pattern="/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/"
                 placeholder="Enter longitude"
               />
               {errors.longitude && (

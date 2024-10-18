@@ -148,7 +148,7 @@ const SpecialtyList: React.FC<{
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {specialties.map((specialty) => (
-        <div key={specialty.id} className="bg-white p-6 rounded-lg shadow-md">
+        <div key={specialty._id} className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold text-green-800 mb-2">
             {specialty.name}
           </h2>
@@ -162,7 +162,7 @@ const SpecialtyList: React.FC<{
           <h3 className="font-semibold text-green-700 mb-2">Doctors:</h3>
           <ul className="space-y-1 mb-4">
             {specialty.doctors.map((doctor) => (
-              <li key={doctor.id} className="text-green-600">
+              <li key={doctor._id} className="text-green-600">
                 {doctor.name}
                 <ul className="ml-4 text-sm">
                   {doctor.consulting.map((schedule, index) => (
@@ -217,7 +217,7 @@ const SpecialtyForm: React.FC<{
 }> = ({ specialty, onSave, onCancel }) => {
   const [formData, setFormData] = useState<Specialty>(
     specialty || {
-      id: "",
+      _id: "",
       name: "",
       description: "",
       department_info: "",
@@ -350,7 +350,7 @@ const DoctorSchedule: React.FC<{
   const addDoctor = () => {
     onUpdate([
       ...doctors,
-      { id: String(doctors.length + 1), name: "", consulting: [] },
+      { _id: String(doctors.length + 1), name: "", consulting: [] },
     ]);
   };
 
@@ -370,7 +370,7 @@ const DoctorSchedule: React.FC<{
       <h3 className="text-lg font-semibold text-green-800 mb-2">Doctors</h3>
       {doctors.map((doctor, index) => (
         <div
-          key={doctor.id}
+          key={doctor._id}
           className="mb-4 p-4 border border-green-200 rounded-md"
         >
           <input
