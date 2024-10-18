@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
 import HospitalRegistration from "./pages/Registration";
 import HospitalLogin from "./pages/Login";
 import PasswordReset from "./pages/PasswordReset";
