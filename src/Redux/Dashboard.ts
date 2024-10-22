@@ -19,6 +19,17 @@ export interface Specialty {
   doctors: Doctor[];
 }
 
+export interface Booking {
+  user_name?:string;
+  mobile?:string;
+  email?: string;
+  specialty?:string;
+  doctor_name?:string;
+  booking_date?:Date;
+  booking_time: string;
+  status:"pending"|"accepted" |"declained"
+}
+
 interface InitialStateType {
   _id: string;
   name: string;
@@ -37,9 +48,10 @@ interface InitialStateType {
     closing_time: string;
     is_holiday: boolean;
   }[];
+
   reviews: any[];
   specialties: Specialty[]; // Type specialties properly here
-  booking: any[];
+  booking: Booking[]
 }
 
 const InitialState: InitialStateType = {

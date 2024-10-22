@@ -27,8 +27,6 @@ const HospitalLogin: React.FC = () => {
     await apiClient
       .post("/api/hospital/login", { ...formData }, { withCredentials: true })
       .then((result) => {
-        console.log(import.meta.env);
-        
         successToast(result.data.message);
         navigate("/dashboard");
       })
