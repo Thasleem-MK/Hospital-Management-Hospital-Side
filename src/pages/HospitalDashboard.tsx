@@ -12,25 +12,18 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSidebar } from "../Redux/SideBar";
 import SideBar from "../Components/SideBar";
-import { apiClient } from "../Components/Axios";
 import { RootState } from "../Redux/Store";
 import { setHospitalData } from "../Redux/Dashboard";
+import { fetchData } from "../Components/FetchData";
 
 const HospitalDashboard: React.FC = () => {
   const dispatch = useDispatch();
   const { name, image, address, phone, email, specialties, booking } =
     useSelector((state: RootState) => state.Dashboard);
-  useEffect(() => {
-    const getData = async () => {
-      await apiClient
-        .get("/api/hospital/details", { withCredentials: true })
-        .then((result) => {
-          dispatch(setHospitalData(result.data.data));
-        })
-        .catch((err) => console.log("err", err));
-    };
-    getData();
-  }, []);
+
+useEffect(() => {
+  fetchData(dispatch, setHospitalData);
+}, []);
 
   return (
     <div className="flex h-screen bg-green-50">

@@ -152,7 +152,6 @@ const PasswordReset: React.FC = () => {
                   type="text"
                   id="otp"
                   value={formData.otp}
-                  // onChange={(e) => setOtp(e.target.value)}
                   onChange={(e) =>
                     setFormData({ ...formData, otp: e.target.value })
                   }

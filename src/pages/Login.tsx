@@ -4,10 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { BackButton, FormInput } from "../Components/Commen";
 import { apiClient } from "../Components/Axios";
 import { successToast } from "../Components/Toastify";
+import { useDispatch } from "react-redux";
+import { setHospitalData } from "../Redux/Dashboard";
 
 const HospitalLogin: React.FC = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -15,6 +15,7 @@ const HospitalLogin: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +28,9 @@ const HospitalLogin: React.FC = () => {
     await apiClient
       .post("/api/hospital/login", { ...formData }, { withCredentials: true })
       .then((result) => {
+        dispatch(setHospitalData({ _id: result.data.data._id }));
         successToast(result.data.message);
+        localStorage.setItem("accessToken", result.data.token);
         navigate("/dashboard");
       })
       .catch((err) => {

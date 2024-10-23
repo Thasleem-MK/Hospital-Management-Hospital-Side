@@ -1,5 +1,4 @@
 import {
-  Calendar,
   Hospital,
   LogOut,
   Stethoscope,
@@ -70,7 +69,7 @@ const SideBar = () => {
               <span>Specialties</span>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/appointments"
               className="flex items-center space-x-2 hover:bg-green-700 p-2 rounded-md"
@@ -78,7 +77,7 @@ const SideBar = () => {
               <Calendar size={20} />
               <span>Appointments</span>
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
       <div className="absolute bottom-20 left-4">
