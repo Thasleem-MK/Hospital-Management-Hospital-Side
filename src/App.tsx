@@ -12,7 +12,7 @@ import { useEffect } from "react";
 import { fetchData } from "./Components/FetchData";
 import { useDispatch } from "react-redux";
 import { setHospitalData } from "./Redux/Dashboard";
-import Protector from "./Components/Protector";
+import { HomeProtector, Protector } from "./Components/Protector";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,19 +26,54 @@ function App() {
         <Route
           path="/"
           element={
-            <Protector>
+            <HomeProtector>
               <HospitalHomePage />
-            </Protector>
+            </HomeProtector>
           }
         />
         <Route path="/registration" element={<HospitalRegistration />} />
         <Route path="/login" element={<HospitalLogin />} />
-        <Route path="/newpassword" element={<PasswordReset />} />
-        <Route path="/dashboard" element={<HospitalDashboard />} />
-        <Route path="/doctors" element={<DoctorManagement />} />
-        <Route path="/specialties" element={<SpecialtyManagement />} />
+        <Route
+          path="/newpassword"
+          element={
+            <Protector>
+              <PasswordReset />
+            </Protector>
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            <Protector>
+              <HospitalDashboard />
+            </Protector>
+          }
+        />
+        <Route
+          path="/doctors"
+          element={
+            <Protector>
+              <DoctorManagement />
+            </Protector>
+          }
+        />
+        <Route
+          path="/specialties"
+          element={
+            <Protector>
+              <SpecialtyManagement />
+            </Protector>
+          }
+        />
         {/* <Route path="/appointments" element={<AppointmentsManagement />} /> */}
-        <Route path="/profile" element={<HospitalProfile />} />
+        <Route
+          path="/profile"
+          element={
+            <Protector>
+              <HospitalProfile />
+            </Protector>
+          }
+        />
       </Routes>
     </div>
   );
