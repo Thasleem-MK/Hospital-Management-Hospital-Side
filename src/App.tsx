@@ -12,6 +12,7 @@ import { useEffect } from "react";
 import { fetchData } from "./Components/FetchData";
 import { useDispatch } from "react-redux";
 import { setHospitalData } from "./Redux/Dashboard";
+import Protector from "./Components/Protector";
 
 function App() {
   const dispatch = useDispatch();
@@ -22,7 +23,14 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<HospitalHomePage />} />
+        <Route
+          path="/"
+          element={
+            <Protector>
+              <HospitalHomePage />
+            </Protector>
+          }
+        />
         <Route path="/registration" element={<HospitalRegistration />} />
         <Route path="/login" element={<HospitalLogin />} />
         <Route path="/newpassword" element={<PasswordReset />} />

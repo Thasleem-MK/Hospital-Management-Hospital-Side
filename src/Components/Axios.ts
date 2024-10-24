@@ -25,14 +25,17 @@ const refreshAccessToken = async () => {
     const response = await apiClient.get("/api/refresh", {
       withCredentials: true,
     });
+    console.log("Response", response);
 
     const newAccessToken = response.data.accessToken;
     localStorage.setItem("accessToken", newAccessToken);
 
     return newAccessToken;
   } catch (error) {
+    console.log("sdfsdfsdf");
+
     localStorage.removeItem("accessToken");
-    window.location.href = "/login"; // Redirect to login when refresh fails
+    window.location.href = "http://localhost:5173/login"; // Redirect to login when refresh fails
     throw error;
   }
 };
