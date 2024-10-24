@@ -8,7 +8,7 @@ export const HomeProtector = ({ children }:{children:any}) => {
 };
 
 export const Protector = ({ children }: { children: any }) => {
-  const { _id } = useSelector((state: RootState) => state.Dashboard);
-  return <div>{_id !== "" ? children : <Navigate to="/login" />}</div>;
+  const token = localStorage.getItem("accessToken");
+  return <div>{ token? children : <Navigate to="/login" />}</div>;
 };
 
