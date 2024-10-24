@@ -8,8 +8,17 @@ import DoctorManagement from "./pages/Doctors";
 import SpecialtyManagement from "./pages/Specialty";
 // import AppointmentsManagement from "./pages/Appointment";
 import HospitalProfile from "./pages/Profile";
+import { useEffect } from "react";
+import { fetchData } from "./Components/FetchData";
+import { useDispatch } from "react-redux";
+import { setHospitalData } from "./Redux/Dashboard";
 
 function App() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    fetchData(dispatch, setHospitalData);
+  }, [dispatch]);
+
   return (
     <div>
       <Routes>

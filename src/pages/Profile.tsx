@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Hospital,
   Phone,
@@ -15,7 +15,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setHospitalData } from "../Redux/Dashboard";
 import { RootState } from "../Redux/Store";
-import { fetchData } from "../Components/FetchData";
 
 const HospitalProfile: React.FC = () => {
   const dispatch = useDispatch();
@@ -35,10 +34,6 @@ const HospitalProfile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetchData(dispatch, setHospitalData);
-  }, []);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -116,7 +111,6 @@ const HospitalProfile: React.FC = () => {
           workingHours: working_hours,
           emergencyContact: emergencyContact,
           about: about,
-          // image: image,
         },
         { withCredentials: true }
       )

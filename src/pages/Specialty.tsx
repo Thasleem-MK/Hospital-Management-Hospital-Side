@@ -6,9 +6,9 @@ import { BackButton } from "../Components/Commen";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../Redux/Store";
 import { Doctor, setHospitalData, Specialty } from "../Redux/Dashboard";
-import { fetchData } from "../Components/FetchData";
 import { apiClient } from "../Components/Axios";
 import { errorToast, successToast } from "../Components/Toastify";
+import { convertTo12HourFormat } from "./Doctors";
 
 const SpecialtyManagement: React.FC = () => {
   const { specialties, _id } = useSelector(
@@ -23,10 +23,6 @@ const SpecialtyManagement: React.FC = () => {
   );
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    fetchData(dispatch, setHospitalData);
-  }, []);
 
   useEffect(() => {
     filterSpecialties();
@@ -167,8 +163,9 @@ const SpecialtyList: React.FC<{
                 <ul className="ml-4 text-sm">
                   {doctor.consulting.map((schedule, index) => (
                     <li key={index}>
-                      {schedule.day}: {schedule.start_time} -{" "}
-                      {schedule.end_time}
+                      {schedule.day}:{" "}
+                      {convertTo12HourFormat(schedule.start_time)} -{" "}
+                      {convertTo12HourFormat(schedule.end_time)}
                     </li>
                   ))}
                 </ul>
@@ -380,6 +377,15 @@ const DoctorSchedule: React.FC<{
               updateDoctor(index, { ...doctor, name: e.target.value })
             }
             placeholder="Doctor's name"
+            className="mb-2 w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
+          />
+          <input
+            type="text"
+            value={doctor.qualification}
+            onChange={(e) =>
+              updateDoctor(index, { ...doctor, qualification: e.target.value })
+            }
+            placeholder="Doctor's qualifications"
             className="mb-2 w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
           />
           {doctor.consulting.map((schedule, scheduleIndex) => (

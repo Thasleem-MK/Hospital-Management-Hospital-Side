@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export interface Doctor {
   _id: string;
   name: string;
+  qualification?: string;
   consulting: {
     day: string;
     start_time: string;
@@ -20,14 +21,14 @@ export interface Specialty {
 }
 
 export interface Booking {
-  user_name?:string;
-  mobile?:string;
+  user_name?: string;
+  mobile?: string;
   email?: string;
-  specialty?:string;
-  doctor_name?:string;
-  booking_date?:Date;
+  specialty?: string;
+  doctor_name?: string;
+  booking_date?: Date;
   booking_time: string;
-  status:"pending"|"accepted" |"declained"
+  status: "pending" | "accepted" | "declained";
 }
 
 interface InitialStateType {
@@ -51,7 +52,7 @@ interface InitialStateType {
 
   reviews: any[];
   specialties: Specialty[]; // Type specialties properly here
-  booking: Booking[]
+  booking: Booking[];
 }
 
 const InitialState: InitialStateType = {
