@@ -8,6 +8,7 @@ import {
   CheckCircle,
   X,
   Clock,
+  Crosshair,
 } from "lucide-react";
 import { BackButton, FormInput } from "../Components/Commen";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,20 +30,21 @@ const HospitalRegistration: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
-   const [workingHours, setWorkingHours] = useState<WorkingHours>({
-     Monday: { open: "", close: "", isHoliday: false },
-     Tuesday: { open: "", close: "", isHoliday: false },
-     Wednesday: { open: "", close: "", isHoliday: false },
-     Thursday: { open: "", close: "", isHoliday: false },
-     Friday: { open: "", close: "", isHoliday: false },
-     Saturday: { open: "", close: "", isHoliday: false },
-     Sunday: { open: "", close: "", isHoliday: true },
-   });
+  const [workingHours, setWorkingHours] = useState<WorkingHours>({
+    Monday: { open: "", close: "", isHoliday: false },
+    Tuesday: { open: "", close: "", isHoliday: false },
+    Wednesday: { open: "", close: "", isHoliday: false },
+    Thursday: { open: "", close: "", isHoliday: false },
+    Friday: { open: "", close: "", isHoliday: false },
+    Saturday: { open: "", close: "", isHoliday: false },
+    Sunday: { open: "", close: "", isHoliday: true },
+  });
   const [otpSent, setOtpSent] = useState(false);
   const [otp, setOtp] = useState("");
   const [generateOtp, setGenerateOtp] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [showOtpPopup, setShowOtpPopup] = useState(false);
+  const [isGettingLocation, setIsGettingLocation] = useState(false);
   const navigate = useNavigate();
 
   const handleChange = (
@@ -53,16 +55,16 @@ const HospitalRegistration: React.FC = () => {
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
-    const handleWorkingHoursChange = (
-      day: string,
-      type: "open" | "close" | "isHoliday",
-      value: string | boolean
-    ) => {
-      setWorkingHours((prev) => ({
-        ...prev,
-        [day]: { ...prev[day], [type]: value },
-      }));
-    };
+  const handleWorkingHoursChange = (
+    day: string,
+    type: "open" | "close" | "isHoliday",
+    value: string | boolean
+  ) => {
+    setWorkingHours((prev) => ({
+      ...prev,
+      [day]: { ...prev[day], [type]: value },
+    }));
+  };
 
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
@@ -75,15 +77,15 @@ const HospitalRegistration: React.FC = () => {
       newErrors.mobile = "Mobile number must be 10 digits";
     if (!formData.address) newErrors.address = "Address is required";
     if (!formData.latitude) newErrors.latitude = "Latitude is required";
-    else if (!/^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/.test(formData.latitude))
-      newErrors.latitude = "Invalid latitude format";
+    // else if (!/^-?([1-8]?[1-9]|[1-9]0)\.{1}\d{1,6}$/.test(formData.latitude))
+    //   newErrors.latitude = "Invalid latitude format";
     if (!formData.longitude) newErrors.longitude = "Longitude is required";
-    else if (
-      !/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/.test(
-        formData.longitude
-      )
-    )
-      newErrors.longitude = "Invalid longitude format";
+    // else if (
+    //   !/^-?(([-+]?)([\d]{1,3})((\.)(\d+))?)|(([-+]?)([\d]{1,2})((\.)(\d+))?)|(([-+]?)([\d]{1,3})((\.)(\d+))?)|180\.0+$/.test(
+    //     formData.longitude
+    //   )
+    // )
+    //   newErrors.longitude = "Invalid longitude format";
     if (!formData.password) newErrors.password = "Password is required";
     else if (formData.password.length < 8)
       newErrors.password = "Password must be at least 8 characters";
@@ -140,6 +142,30 @@ const HospitalRegistration: React.FC = () => {
           errorToast("Wrong OTP, please try again!");
         }
       }
+    }
+  };
+
+  const getCurrentLocation = () => {
+    setIsGettingLocation(true);
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setFormData((prev) => ({
+            ...prev,
+            latitude: position.coords.latitude.toFixed(6),
+            longitude: position.coords.longitude.toFixed(6),
+          }));
+          setIsGettingLocation(false);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+          errorToast("Unable to get your location. Please enter manually.");
+          setIsGettingLocation(false);
+        }
+      );
+    } else {
+      errorToast("Geolocation is not supported by your browser");
+      setIsGettingLocation(false);
     }
   };
 
@@ -309,6 +335,23 @@ const HospitalRegistration: React.FC = () => {
             </div>
           </div>
           <div>
+            <button
+              type="button"
+              onClick={getCurrentLocation}
+              className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 flex items-center justify-center"
+              disabled={isGettingLocation}
+            >
+              {isGettingLocation ? (
+                "Getting Location..."
+              ) : (
+                <>
+                  <Crosshair className="mr-2" size={18} />
+                  Get Current Location
+                </>
+              )}
+            </button>
+          </div>
+          <div>
             <label className="block text-sm font-medium text-green-700 mb-1">
               Working Hours
             </label>
@@ -449,7 +492,10 @@ const HospitalRegistration: React.FC = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
           <div className="bg-white rounded-lg p-6 w-full max-w-md relative">
             <button
-              onClick={() => setShowOtpPopup(false)}
+              onClick={() => {
+                setShowOtpPopup(false);
+                setOtpSent(false);
+              }}
               className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
             >
               <X size={24} />

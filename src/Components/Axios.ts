@@ -1,8 +1,8 @@
 import axios from "axios";
 
 export const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_AXIOS_BASEURL,
-  // baseURL: "http://localhost:3000",
+  // baseURL: import.meta.env.VITE_AXIOS_BASEURL,
+  baseURL: "http://localhost:3000",
 });
 
 let isRefreshing = false; // Flag to track the refresh process
@@ -25,8 +25,6 @@ const refreshAccessToken = async () => {
     const response = await apiClient.get("/api/refresh", {
       withCredentials: true,
     });
-    console.log("Response", response);
-
     const newAccessToken = response.data.accessToken;
     localStorage.setItem("accessToken", newAccessToken);
 
@@ -35,7 +33,8 @@ const refreshAccessToken = async () => {
     console.log("sdfsdfsdf");
 
     localStorage.removeItem("accessToken");
-    window.location.href = "http://localhost:5173/login"; // Redirect to login when refresh fails
+    window.location.href =
+      "https://hospital-mangement-backend-jnh5.vercel.app/login"; // Redirect to login when refresh fails
     throw error;
   }
 };
