@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Search, Plus, Edit, Trash2, ChevronRight, X } from "lucide-react";
+import { Search, Plus, Edit, Trash2, X } from "lucide-react";
 import { Button } from "../Components/UI/Button";
 import { FormInput } from "../Components/Commen";
 import { Select } from "../Components/UI/Select";
@@ -299,14 +299,14 @@ const DoctorManagement: React.FC = () => {
                       </li>
                     ))}
                   </ul>
-                  <Button
+                  {/* <Button
                     variant="link"
                     className="mt-2 text-green-600 hover:text-green-800"
                     onClick={() => navigate(`/doctor/${doctor._id}`)}
                   >
                     View Details
                     <ChevronRight size={16} className="ml-1" />
-                  </Button>
+                  </Button> */}
                 </div>
               ))}
             </CardContent>
