@@ -130,7 +130,7 @@ const HospitalProfile: React.FC = () => {
         <div className="relative mb-6 flex items-center justify-center">
           <BackButton OnClick={() => navigate("/dashboard")} />
           <h2 className="text-3xl font-bold text-green-800">
-            Hospital Profile
+            Profile
           </h2>
         </div>
         <div className="mb-6 flex justify-center">

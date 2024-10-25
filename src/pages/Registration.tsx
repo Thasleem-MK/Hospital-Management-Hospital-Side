@@ -133,6 +133,7 @@ const HospitalRegistration: React.FC = () => {
             )
             .then((result) => {
               successToast(result.data.message);
+              navigate("/login");
             })
             .catch((err) => {
               errorToast(err.response.data.message);
