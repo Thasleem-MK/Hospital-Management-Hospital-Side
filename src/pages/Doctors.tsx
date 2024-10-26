@@ -267,49 +267,58 @@ const DoctorManagement: React.FC = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  {specialty.doctors.map((doctor) => (
-                    <div
-                      key={doctor._id}
-                      className="mb-4 p-4 border border-green-200 rounded-lg hover:bg-green-50 transition-colors"
-                    >
-                      <div className="flex justify-between items-center mb-2">
-                        <h3 className="text-xl font-semibold text-green-800">
-                          {doctor.name}
-                        </h3>
-                        <div>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="mr-2 text-green-600 border-green-600 hover:bg-green-100"
-                            onClick={() => handleEditDoctor(doctor)}
-                          >
-                            <Edit size={16} />
-                          </Button>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="text-red-600 border-red-600 hover:bg-red-100"
-                            onClick={() =>
-                              handleDeleteDoctor(specialty.name, doctor._id as string)
-                            }
-                          >
-                            <Trash2 size={16} />
-                          </Button>
-                        </div>
-                      </div>
-                      <h4 className="font-semibold text-green-700 mb-2">
-                        Consulting Hours:
-                      </h4>
-                      <ul className="space-y-1">
-                        {doctor.consulting.map((schedule, index) => (
-                          <li key={index} className="text-green-600">
-                            {schedule.day}:{" "}
-                            {convertTo12HourFormat(schedule.start_time)} -{" "}
-                            {convertTo12HourFormat(schedule.end_time)}
-                          </li>
-                        ))}
-                      </ul>
-                      {/* <Button
+                  {specialty.doctors.map(
+                    (doctor) =>
+                      doctor.consulting.filter(
+                        (element) =>
+                          (element.day == selectedDay || selectedDay == "") &&
+                          doctor.name.includes(searchTerm)
+                      ).length > 0 && (
+                        <div
+                          key={doctor._id}
+                          className="mb-4 p-4 border border-green-200 rounded-lg hover:bg-green-50 transition-colors"
+                        >
+                          <div className="flex justify-between items-center mb-2">
+                            <h3 className="text-xl font-semibold text-green-800">
+                              {doctor.name}
+                            </h3>
+                            <div>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="mr-2 text-green-600 border-green-600 hover:bg-green-100"
+                                onClick={() => handleEditDoctor(doctor)}
+                              >
+                                <Edit size={16} />
+                              </Button>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="text-red-600 border-red-600 hover:bg-red-100"
+                                onClick={() =>
+                                  handleDeleteDoctor(
+                                    specialty.name,
+                                    doctor._id as string
+                                  )
+                                }
+                              >
+                                <Trash2 size={16} />
+                              </Button>
+                            </div>
+                          </div>
+                          <h4 className="font-semibold text-green-700 mb-2">
+                            Consulting Hours:
+                          </h4>
+                          <ul className="space-y-1">
+                            {doctor.consulting.map((schedule, index) => (
+                              <li key={index} className="text-green-600">
+                                {schedule.day}:{" "}
+                                {convertTo12HourFormat(schedule.start_time)} -{" "}
+                                {convertTo12HourFormat(schedule.end_time)}
+                              </li>
+                            ))}
+                          </ul>
+                          {/* <Button
                     variant="link"
                     className="mt-2 text-green-600 hover:text-green-800"
                     onClick={() => navigate(`/doctor/${doctor._id}`)}
@@ -317,8 +326,9 @@ const DoctorManagement: React.FC = () => {
                     View Details
                     <ChevronRight size={16} className="ml-1" />
                   </Button> */}
-                    </div>
-                  ))}
+                        </div>
+                      )
+                  )}
                 </CardContent>
               </Card>
             )
