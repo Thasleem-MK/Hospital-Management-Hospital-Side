@@ -51,7 +51,7 @@ const SpecialtyManagement: React.FC = () => {
         setIsFormOpen(false);
         successToast("Added new specialty");
       })
-      .catch((err) => errorToast(err.response.data.message));
+      .catch((err) => {errorToast(err.response.data.message);});
   };
 
   // Edit a specialty.
@@ -358,7 +358,7 @@ const DoctorSchedule: React.FC<{
   const addDoctor = () => {
     onUpdate([
       ...doctors,
-      { _id: String(doctors.length + 1), name: "", consulting: [] },
+      {name: "", consulting: [] },
     ]);
   };
 

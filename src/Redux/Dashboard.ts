@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export interface Doctor {
-  _id: string;
+  _id?: string;
   name: string;
   qualification?: string;
   consulting: {
@@ -12,7 +12,7 @@ export interface Doctor {
 }
 
 export interface Specialty {
-  _id: string;
+  _id?: string;
   name: string;
   description: string;
   department_info: string;

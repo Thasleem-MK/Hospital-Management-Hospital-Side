@@ -18,7 +18,7 @@ import { RootState } from "../Redux/Store";
 import { apiClient } from "../Components/Axios";
 
 interface Doctor {
-  _id: string;
+  _id?: string;
   name: string;
   specialty?: string;
   qualification?: string;
@@ -290,7 +290,7 @@ const DoctorManagement: React.FC = () => {
                             size="sm"
                             className="text-red-600 border-red-600 hover:bg-red-100"
                             onClick={() =>
-                              handleDeleteDoctor(specialty.name, doctor._id)
+                              handleDeleteDoctor(specialty.name, doctor._id as string)
                             }
                           >
                             <Trash2 size={16} />
