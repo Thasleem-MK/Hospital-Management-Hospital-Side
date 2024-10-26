@@ -68,7 +68,8 @@ const DoctorManagement: React.FC = () => {
             (consulting) =>
               consulting.day.toLowerCase() === selectedDay.toLowerCase()
           )
-        ))
+        )) &&
+      specialty.doctors.length > 0
     );
   });
 
@@ -190,8 +191,8 @@ const DoctorManagement: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8 bg-white">
       <div className="relative mb-6 flex items-center justify-center">
-        <BackButton OnClick={() => navigate("/Dashboard")} />
-        <h1 className="text-3xl font-bold text-green-800">
+        <BackButton OnClick={() => navigate("/dashboard")} />
+        <h1 className="text-3xl font-bold text-green-800 mb-6 mt-12">
           Doctors Management
         </h1>
       </div>
