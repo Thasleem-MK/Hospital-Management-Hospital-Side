@@ -60,7 +60,7 @@ const InitialState: InitialStateType = {
   name: "",
   address: "",
   phone: "",
-  emergencyContact: "",
+  emergencyContact: "0000000000",
   email: "",
   latitude: null,
   longitude: null,

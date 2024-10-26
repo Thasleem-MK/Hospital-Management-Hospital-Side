@@ -41,7 +41,7 @@ const SpecialtyManagement: React.FC = () => {
   const handleAddSpecialty = async (newSpecialty: Omit<Specialty, "id">) => {
     await apiClient
       .post(
-        `/api//hospital/specialty/${_id}`,
+        `/api/hospital/specialty/${_id}`,
         { ...newSpecialty },
         { withCredentials: true }
       )
@@ -142,66 +142,77 @@ const SpecialtyList: React.FC<{
   const [selectedSpecialty, setSelectedSpecialty] = useState("");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {specialties.map((specialty) => (
-        <div key={specialty._id} className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold text-green-800 mb-2">
-            {specialty.name}
-          </h2>
-          <p className="text-green-600 mb-4">{specialty.description}</p>
-          <p className="text-sm text-green-700 mb-2">
-            {specialty.department_info}
-          </p>
-          <p className="text-sm text-green-700 mb-4">
-            Phone: {specialty.phone}
-          </p>
-          <h3 className="font-semibold text-green-700 mb-2">Doctors:</h3>
-          <ul className="space-y-1 mb-4">
-            {specialty.doctors.map((doctor) => (
-              <li key={doctor._id} className="text-green-600">
-                {doctor.name}
-                <ul className="ml-4 text-sm">
-                  {doctor.consulting.map((schedule, index) => (
-                    <li key={index}>
-                      {schedule.day}:{" "}
-                      {convertTo12HourFormat(schedule.start_time)} -{" "}
-                      {convertTo12HourFormat(schedule.end_time)}
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-          <div className="flex justify-end space-x-2">
-            <button
-              onClick={() => onEdit(specialty)}
-              className="text-blue-600 hover:text-blue-800"
-            >
-              <Edit size={20} />
-            </button>
-            <button
-              onClick={() => {
-                setIsDeleteOpen(true);
-                setSelectedSpecialty(specialty.name);
-              }}
-              className="text-red-600 hover:text-red-800"
-            >
-              <Trash2 size={20} />
-            </button>
-          </div>
+    <div>
+      {specialties.length === 0 ? (
+        <div className="text-center text-gray-600 mt-8">
+          No Data found. Please add new specialties!
         </div>
-      ))}
-      {isDeleteOpen && (
-        <DeleteConfirmationDialog
-          onCancel={() => {
-            setIsDeleteOpen(false);
-            setSelectedSpecialty("");
-          }}
-          onConfirm={() => {
-            onDelete(selectedSpecialty);
-            setIsDeleteOpen(false);
-          }}
-        />
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {specialties.map((specialty) => (
+            <div
+              key={specialty._id}
+              className="bg-white p-6 rounded-lg shadow-md"
+            >
+              <h2 className="text-xl font-semibold text-green-800 mb-2">
+                {specialty.name}
+              </h2>
+              <p className="text-green-600 mb-4">{specialty.description}</p>
+              <p className="text-sm text-green-700 mb-2">
+                {specialty.department_info}
+              </p>
+              <p className="text-sm text-green-700 mb-4">
+                Phone: {specialty.phone}
+              </p>
+              <h3 className="font-semibold text-green-700 mb-2">Doctors:</h3>
+              <ul className="space-y-1 mb-4">
+                {specialty.doctors.map((doctor) => (
+                  <li key={doctor._id} className="text-green-600">
+                    {doctor.name}
+                    <ul className="ml-4 text-sm">
+                      {doctor.consulting.map((schedule, index) => (
+                        <li key={index}>
+                          {schedule.day}:{" "}
+                          {convertTo12HourFormat(schedule.start_time)} -{" "}
+                          {convertTo12HourFormat(schedule.end_time)}
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ul>
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={() => onEdit(specialty)}
+                  className="text-blue-600 hover:text-blue-800"
+                >
+                  <Edit size={20} />
+                </button>
+                <button
+                  onClick={() => {
+                    setIsDeleteOpen(true);
+                    setSelectedSpecialty(specialty.name);
+                  }}
+                  className="text-red-600 hover:text-red-800"
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
+            </div>
+          ))}
+          {isDeleteOpen && (
+            <DeleteConfirmationDialog
+              onCancel={() => {
+                setIsDeleteOpen(false);
+                setSelectedSpecialty("");
+              }}
+              onConfirm={() => {
+                onDelete(selectedSpecialty);
+                setIsDeleteOpen(false);
+              }}
+            />
+          )}
+        </div>
       )}
     </div>
   );
