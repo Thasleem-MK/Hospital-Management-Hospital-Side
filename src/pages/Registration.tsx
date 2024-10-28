@@ -170,6 +170,14 @@ const HospitalRegistration: React.FC = () => {
     }
   };
 
+  const fill24HourTimes = () => {
+    const updated24HourTimes = Object.keys(workingHours).reduce((acc, day) => {
+      acc[day] = { open: "00:00", close: "23:59", isHoliday: false };
+      return acc;
+    }, {} as WorkingHours);
+    setWorkingHours(updated24HourTimes);
+  };
+
   return (
     <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full bg-white rounded-lg shadow-md p-8">
@@ -353,9 +361,17 @@ const HospitalRegistration: React.FC = () => {
             </button>
           </div>
           <div>
-            <label className="block text-sm font-medium text-green-700 mb-1">
-              Working Hours
-            </label>
+            <div className="flex justify-between items-center mb-5">
+              <label className="block text-sm font-medium text-gray-700">
+                Working Hours
+              </label>
+              <button
+                onClick={fill24HourTimes}
+                className="px-4 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 border border-green-600 text-green-600 hover:bg-green-50 focus:ring-green-500"
+              >
+                Set 24/7 Hours
+              </button>
+            </div>
             {Object.entries(workingHours).map(([day, hours]) => (
               <div key={day} className="flex items-center space-x-2 mb-2">
                 <span className="w-24 text-sm text-green-700">{day}</span>
