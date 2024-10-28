@@ -181,10 +181,8 @@ const HospitalRegistration: React.FC = () => {
   return (
     <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full bg-white rounded-lg shadow-md p-8">
-        <div className="relative mb-6 flex items-center justify-center">
           <BackButton OnClick={() => navigate("/")} />
-          <h2 className="text-3xl font-bold text-green-800">Registration</h2>
-        </div>
+          <h2 className="text-3xl font-bold text-green-800 inline-block">Registration</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>

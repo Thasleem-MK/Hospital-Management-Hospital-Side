@@ -42,10 +42,10 @@ const HospitalLogin: React.FC = () => {
   return (
     <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
-        <div className="relative mb-6 flex items-center justify-center">
-          <BackButton OnClick={() => navigate("/")} />
-          <h2 className="text-3xl font-bold text-green-800">User Login</h2>
-        </div>
+        <BackButton OnClick={() => navigate("/")} />
+        <h2 className="text-3xl font-bold text-green-800 inline-block mb-6 justify-self-center">
+          User Login
+        </h2>
         {error && (
           <div className="mb-4 p-2 bg-red-100 border border-red-400 text-red-700 rounded flex items-center">
             <AlertCircle className="mr-2" size={18} />

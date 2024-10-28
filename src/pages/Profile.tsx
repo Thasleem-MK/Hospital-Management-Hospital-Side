@@ -127,12 +127,10 @@ const HospitalProfile: React.FC = () => {
   return (
     <div className="min-h-screen bg-green-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
-        <div className="relative mb-6 flex items-center justify-center">
-          <BackButton OnClick={() => navigate("/dashboard")} />
-          <h2 className="text-3xl font-bold text-green-800">
-            Profile
-          </h2>
-        </div>
+        <BackButton OnClick={() => navigate("/dashboard")} />
+        <h1 className="text-3xl font-bold text-green-800 inline-block">
+          Profile
+        </h1>
         <div className="mb-6 flex justify-center">
           <div className="relative">
             <img

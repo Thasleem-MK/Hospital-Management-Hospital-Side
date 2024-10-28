@@ -149,12 +149,10 @@ const AppointmentsManagement: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="relative mb-6 flex items-center justify-center">
         <BackButton OnClick={() => navigate("/Dashboard")} />
-        <h1 className="text-3xl font-bold text-green-800">
+        <h1 className="text-3xl font-bold text-green-800 inline-block">
           Appointments Management
         </h1>
-      </div>
 
       {newAppointment && (
         <div className="mb-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 rounded-md">

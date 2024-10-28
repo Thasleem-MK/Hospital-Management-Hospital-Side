@@ -13,6 +13,7 @@ import { fetchData } from "./Components/FetchData";
 import { useDispatch } from "react-redux";
 import { setHospitalData } from "./Redux/Dashboard";
 import { HomeProtector, Protector } from "./Components/Protector";
+import SettingsPage from "./pages/Settings";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,6 +72,22 @@ function App() {
           element={
             <Protector>
               <HospitalProfile />
+            </Protector>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <Protector>
+              <HospitalProfile />
+            </Protector>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <Protector>
+              <SettingsPage />
             </Protector>
           }
         />

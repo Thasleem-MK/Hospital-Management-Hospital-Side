@@ -1,9 +1,15 @@
-import { Hospital, LogOut, Stethoscope, User, Users, X } from "lucide-react";
+import {
+  Hospital,
+  Settings,
+  Stethoscope,
+  User,
+  Users,
+  X,
+} from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../Redux/Store";
 import { toggleSidebar } from "../Redux/SideBar";
-import { apiClient } from "./Axios";
 
 const SideBar = () => {
   const { openSidebar } = useSelector((state: RootState) => state.Sidebar);
@@ -72,25 +78,17 @@ const SideBar = () => {
               <span>Appointments</span>
             </Link>
           </li> */}
+          <li>
+            <Link
+              to="/settings"
+              className="flex items-center space-x-2 hover:bg-green-700 p-2 rounded-md"
+            >
+              <Settings size={20} />
+              <span>Settings</span>
+            </Link>
+          </li>
         </ul>
       </nav>
-      <div className="absolute bottom-20 left-4">
-        <button
-          className="flex items-center space-x-2 hover:bg-green-700 p-2 rounded-md"
-          onClick={async () => {
-            await apiClient
-              .get("/api/hospital/logout", { withCredentials: true })
-              .then(() => {
-                localStorage.removeItem("accessToken");
-                window.location.href = "/";
-              })
-              .catch((err) => console.log(err));
-          }}
-        >
-          <LogOut size={20} />
-          <span>Logout</span>
-        </button>
-      </div>
       <div className="text-sm absolute bottom-4 left-4">
         <p>Service Support:</p>
         <p className="font-bold">+91 6282811230</p>

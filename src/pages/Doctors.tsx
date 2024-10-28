@@ -190,12 +190,10 @@ const DoctorManagement: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 bg-white">
-      <div className="relative mb-6 flex items-center justify-center">
-        <BackButton OnClick={() => navigate("/dashboard")} />
-        <h1 className="text-3xl font-bold text-green-800 mb-6 mt-12">
-          Doctors Management
-        </h1>
-      </div>
+      <BackButton OnClick={() => navigate("/dashboard")} />
+      <h1 className="text-3xl font-bold text-green-800 mb-6 mt-12 inline-block">
+        Doctors Management
+      </h1>
 
       <div className="mb-6">
         <div className="relative flex-grow mb-4">
