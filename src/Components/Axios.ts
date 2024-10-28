@@ -34,7 +34,7 @@ const refreshAccessToken = async () => {
 
     localStorage.removeItem("accessToken");
     window.location.href =
-      "https://hospital-mangement-backend-jnh5.vercel.app/login"; // Redirect to login when refresh fails
+      "https://hospital-mangement-backend-jnh5.vercel.app/login";
     throw error;
   }
 };
