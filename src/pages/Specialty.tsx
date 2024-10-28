@@ -51,7 +51,9 @@ const SpecialtyManagement: React.FC = () => {
         setIsFormOpen(false);
         successToast("Added new specialty");
       })
-      .catch((err) => {errorToast(err.response.data.message);});
+      .catch((err) => {
+        errorToast(err.response.data.message);
+      });
   };
 
   // Edit a specialty.
@@ -86,7 +88,7 @@ const SpecialtyManagement: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-8 relative">
       <BackButton OnClick={() => navigate("/dashboard")} />
-      <h1 className="text-3xl font-bold text-green-800 mb-6 mt-12">
+      <h1 className="text-3xl font-bold text-green-800 mb-6 mt-12 inline-block">
         Specialty Management
       </h1>
 
@@ -356,10 +358,7 @@ const DoctorSchedule: React.FC<{
   onUpdate: (updatedDoctors: Doctor[]) => void;
 }> = ({ doctors, onUpdate }) => {
   const addDoctor = () => {
-    onUpdate([
-      ...doctors,
-      {name: "", consulting: [] },
-    ]);
+    onUpdate([...doctors, { name: "", consulting: [] }]);
   };
 
   const updateDoctor = (index: number, updatedDoctor: Doctor) => {
