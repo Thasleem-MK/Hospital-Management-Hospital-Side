@@ -368,6 +368,7 @@ const HospitalRegistration: React.FC = () => {
               <button
                 onClick={fill24HourTimes}
                 className="px-4 py-2 rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 border border-green-600 text-green-600 hover:bg-green-50 focus:ring-green-500"
+                type="button"
               >
                 Set 24/7 Hours
               </button>
