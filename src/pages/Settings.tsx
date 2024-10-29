@@ -137,7 +137,7 @@ export default function SettingsPage() {
         localStorage.removeItem("accessToken");
         successToast(result.data.message);
         setShowDeleteConfirmation(false);
-        navigate("/");
+        window.location.href = "/";
       })
       .catch((err) => console.log(err));
   };
