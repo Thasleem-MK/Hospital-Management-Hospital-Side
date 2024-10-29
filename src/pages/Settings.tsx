@@ -14,6 +14,7 @@ import { apiClient } from "../Components/Axios";
 import { useSelector } from "react-redux";
 import { RootState } from "../Redux/Store";
 import { errorToast, successToast } from "../Components/Toastify";
+import { DeleteConfirmationDialog } from "../Components/DeleteConfirmation";
 
 // Define types for each component's props
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -129,10 +130,16 @@ export default function SettingsPage() {
     });
   }, [name, email]);
 
-  const handleDeleteAccount = () => {
-    // Implement account deletion logic here
-    console.log("Account deleted");
-    setShowDeleteConfirmation(false);
+  const handleDeleteAccount = async () => {
+    await apiClient
+      .delete(`/api/hospital/${_id}`,{withCredentials:true})
+      .then((result) => {
+        localStorage.removeItem("accessToken");
+        successToast(result.data.message);
+        setShowDeleteConfirmation(false);
+        navigate("/");
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleNotificationChange = (type: keyof typeof notifications) => {
@@ -162,7 +169,14 @@ export default function SettingsPage() {
         currentPassword: password.currentPassword,
         newPassword: password.newPassword,
       })
-      .then((result) => successToast(result.data.message))
+      .then((result) => {
+        successToast(result.data.message);
+        setPassword({
+          confirmpassword: "",
+          currentPassword: "",
+          newPassword: "",
+        });
+      })
       .catch((err) => console.log(err));
   };
 
@@ -343,25 +357,10 @@ export default function SettingsPage() {
               Delete Account
             </Button>
           ) : (
-            <div className="space-y-4">
-              <p className="text-sm font-semibold text-red-600">
-                Are you sure you want to delete your account?
-              </p>
-              <div className="flex justify-between">
-                <Button
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800"
-                  onClick={() => setShowDeleteConfirmation(false)}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  className="bg-red-600 hover:bg-red-700 text-white"
-                  onClick={handleDeleteAccount}
-                >
-                  Confirm Delete
-                </Button>
-              </div>
-            </div>
+            <DeleteConfirmationDialog
+              onCancel={() => setShowDeleteConfirmation(false)}
+              onConfirm={() => handleDeleteAccount()}
+            />
           )}
         </div>
       </div>
