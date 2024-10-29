@@ -21,9 +21,9 @@ const HospitalDashboard: React.FC = () => {
   const { name, image, address, phone, email, specialties, booking } =
     useSelector((state: RootState) => state.Dashboard);
 
-useEffect(() => {
-  fetchData(dispatch, setHospitalData);
-}, []);
+  useEffect(() => {
+    fetchData(dispatch, setHospitalData);
+  }, []);
 
   return (
     <div className="flex h-screen bg-green-50">
@@ -80,7 +80,9 @@ useEffect(() => {
                   <div className="flex items-center justify-between">
                     <Users size={48} className="text-green-600" />
                     <span className="text-3xl font-bold text-green-800">
-                      {specialties.length}
+                      {specialties.reduce((acc, curr) => {
+                        return acc + curr.doctors.length;
+                      }, 0)}
                     </span>
                   </div>
                   <div className="text-green-600 mt-4 inline-block">
