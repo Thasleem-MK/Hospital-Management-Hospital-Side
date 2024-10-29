@@ -177,7 +177,7 @@ const HospitalProfile: React.FC = () => {
                   id="name"
                   value={name}
                   onChange={handleChange}
-                  disabled={!isEditing}
+                  disabled={true}
                   className="pl-10"
                   placeholder="Enter hospital name"
                 />

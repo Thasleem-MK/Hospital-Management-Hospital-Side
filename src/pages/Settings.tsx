@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Bell,
-  Key,
   Lock,
   LogOut,
   Mail,
@@ -12,6 +11,9 @@ import {
 import { BackButton } from "../Components/Commen";
 import { useNavigate } from "react-router-dom";
 import { apiClient } from "../Components/Axios";
+import { useSelector } from "react-redux";
+import { RootState } from "../Redux/Store";
+import { errorToast, successToast } from "../Components/Toastify";
 
 // Define types for each component's props
 type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -96,6 +98,9 @@ const Switch = ({ id, checked, onChange }: SwitchProps) => (
 // );
 
 export default function SettingsPage() {
+  const { _id, name, email } = useSelector(
+    (state: RootState) => state.Dashboard
+  );
   const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const [notifications, setNotifications] = useState<{
     email: boolean;
@@ -108,6 +113,21 @@ export default function SettingsPage() {
     push: false,
   });
   const navigate = useNavigate();
+  const [password, setPassword] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmpassword: "",
+  });
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+  });
+  useEffect(() => {
+    setProfile({
+      name: name,
+      email: email,
+    });
+  }, [name, email]);
 
   const handleDeleteAccount = () => {
     // Implement account deletion logic here
@@ -117,6 +137,43 @@ export default function SettingsPage() {
 
   const handleNotificationChange = (type: keyof typeof notifications) => {
     setNotifications((prev) => ({ ...prev, [type]: !prev[type] }));
+  };
+
+  const handleChange = async (
+    e: any,
+    setFunction: (value: any) => void,
+    values: any
+  ) => {
+    const name = e.target.name;
+    setFunction({ ...values, [name]: e.target.value });
+  };
+
+  const handleUpdatePassword = async (e: any) => {
+    e.preventDefault();
+    if (
+      password.newPassword.length < 8 ||
+      password.newPassword !== password.confirmpassword
+    ) {
+      errorToast("Password must contain 8 characters and same");
+      return;
+    }
+    await apiClient
+      .put(`/api/hospital/details/${_id}`, {
+        currentPassword: password.currentPassword,
+        newPassword: password.newPassword,
+      })
+      .then((result) => successToast(result.data.message))
+      .catch((err) => console.log(err));
+  };
+
+  const updateProfile = async (e: any) => {
+    e.preventDefault();
+    await apiClient
+      .put(`/api/hospital/details/${_id}`, {
+        name: profile.name,
+      })
+      .then((result) => successToast(result.data.message))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -132,15 +189,29 @@ export default function SettingsPage() {
             <User className="mr-2" />
             Profile Information
           </h2>
-          <form>
+          <form onSubmit={(e) => updateProfile(e)}>
             <div className="space-y-4">
               <div>
                 <Label htmlFor="name">Name</Label>
-                <Input id="name" placeholder="John Doe" />
+                <Input
+                  id="name"
+                  placeholder="John Doe"
+                  type="text"
+                  name="name"
+                  value={profile.name}
+                  onChange={(e) => handleChange(e, setProfile, profile)}
+                />
               </div>
               <div>
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="john@example.com" />
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  value={profile.email}
+                  disabled={true}
+                />
               </div>
               <Button className="bg-green-600 hover:bg-green-700 text-white">
                 Update Profile
@@ -154,19 +225,40 @@ export default function SettingsPage() {
             <Lock className="mr-2" />
             Security
           </h2>
-          <form>
+          <form onSubmit={(e) => handleUpdatePassword(e)}>
             <div className="space-y-4">
               <div>
                 <Label htmlFor="current-password">Current Password</Label>
-                <Input id="current-password" type="password" />
+                <Input
+                  id="current-password"
+                  type="password"
+                  name="currentPassword"
+                  required
+                  value={password.currentPassword}
+                  onChange={(e) => handleChange(e, setPassword, password)}
+                />
               </div>
               <div>
                 <Label htmlFor="new-password">New Password</Label>
-                <Input id="new-password" type="password" />
+                <Input
+                  id="new-password"
+                  type="password"
+                  required
+                  name="newPassword"
+                  value={password.newPassword}
+                  onChange={(e) => handleChange(e, setPassword, password)}
+                />
               </div>
               <div>
                 <Label htmlFor="confirm-password">Confirm New Password</Label>
-                <Input id="confirm-password" type="password" />
+                <Input
+                  id="confirm-password"
+                  type="password"
+                  name="confirmpassword"
+                  required
+                  value={password.confirmpassword}
+                  onChange={(e) => handleChange(e, setPassword, password)}
+                />
               </div>
               <Button className="bg-green-600 hover:bg-green-700 text-white">
                 Update Password
@@ -303,7 +395,7 @@ export default function SettingsPage() {
               Log Out
             </Button>
           </div>
-          <div className="flex items-center justify-between p-2 bg-gray-100 rounded-lg">
+          {/* <div className="flex items-center justify-between p-2 bg-gray-100 rounded-lg">
             <div className="flex items-center">
               <Key className="mr-2 text-green-600" />
               <span>Other Active Sessions</span>
@@ -311,7 +403,7 @@ export default function SettingsPage() {
             <Button className="bg-white text-red-600 border border-red-600 hover:bg-red-50">
               Log Out All
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
