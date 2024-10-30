@@ -34,6 +34,7 @@ export interface Booking {
 interface InitialStateType {
   _id: string;
   name: string;
+  type: string;
   address: string;
   phone: string;
   emergencyContact: string;
@@ -58,6 +59,7 @@ interface InitialStateType {
 const InitialState: InitialStateType = {
   _id: "",
   name: "",
+  type: "",
   address: "",
   phone: "",
   emergencyContact: "0000000000",

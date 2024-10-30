@@ -22,6 +22,7 @@ interface WorkingHours {
 const HospitalRegistration: React.FC = () => {
   const [formData, setFormData] = useState({
     name: "",
+    type: "",
     email: "",
     mobile: "",
     address: "",
@@ -47,9 +48,7 @@ const HospitalRegistration: React.FC = () => {
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const navigate = useNavigate();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
+  const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     setErrors((prev) => ({ ...prev, [name]: "" }));
@@ -69,6 +68,7 @@ const HospitalRegistration: React.FC = () => {
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
     if (!formData.name) newErrors.name = "Hospital name is required";
+    if (formData.type == "") newErrors.type = "Hospital type is required";
     if (!formData.email) newErrors.email = "Email is required";
     else if (!/\S+@\S+\.\S+/.test(formData.email))
       newErrors.email = "Email is invalid";
@@ -181,8 +181,10 @@ const HospitalRegistration: React.FC = () => {
   return (
     <div className="min-h-screen bg-green-50 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full bg-white rounded-lg shadow-md p-8">
-          <BackButton OnClick={() => navigate("/")} />
-          <h2 className="text-3xl font-bold text-green-800 inline-block">Registration</h2>
+        <BackButton OnClick={() => navigate("/")} />
+        <h2 className="text-3xl font-bold text-green-800 inline-block">
+          Registration
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -212,6 +214,38 @@ const HospitalRegistration: React.FC = () => {
             </div>
             <div>
               <label
+                htmlFor="type"
+                className="block text-sm font-medium text-green-700 mb-1"
+              >
+                Hospital Type
+              </label>
+              <div className="relative">
+                <Hospital
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
+                  size={18}
+                />
+                <select
+                  id="type"
+                  name="type"
+                  value={formData.type}
+                  onChange={handleChange}
+                  className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                >
+                  <option value="">Select hospital type</option>
+                  <option value="Allopathy">Allopathy</option>
+                  <option value="Homeopathy">Homeopathy</option>
+                  <option value="Ayurveda">Ayurveda</option>
+                  <option value="Unani">Unani</option>
+                  <option value="Acupuncture">Acupuncture</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              {errors.type && (
+                <p className="text-red-500 text-xs mt-1">{errors.type}</p>
+              )}
+            </div>
+            <div>
+              <label
                 htmlFor="email"
                 className="block text-sm font-medium text-green-700 mb-1"
               >
@@ -235,8 +269,6 @@ const HospitalRegistration: React.FC = () => {
                 <p className="text-red-500 text-xs mt-1">{errors.email}</p>
               )}
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label
                 htmlFor="mobile"
@@ -262,7 +294,9 @@ const HospitalRegistration: React.FC = () => {
                 <p className="text-red-500 text-xs mt-1">{errors.mobile}</p>
               )}
             </div>
-            <div>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-1">
               <label
                 htmlFor="address"
                 className="block text-sm font-medium text-green-700 mb-1"
@@ -281,64 +315,66 @@ const HospitalRegistration: React.FC = () => {
                   onChange={handleChange}
                   className="pl-10 w-full px-3 py-2 border border-green-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
                   placeholder="Enter hospital address"
-                  rows={3}
+                  rows={5}
                 />
               </div>
               {errors.address && (
                 <p className="text-red-500 text-xs mt-1">{errors.address}</p>
               )}
             </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label
-                htmlFor="latitude"
-                className="block text-sm font-medium text-green-700 mb-1"
-              >
-                Latitude
-              </label>
-              <div className="relative">
-                <MapPin
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
-                  size={18}
-                />
-                <FormInput
-                  type="text"
-                  id="latitude"
-                  name="latitude"
-                  value={formData.latitude}
-                  onChange={handleChange}
-                  placeholder="Enter latitude"
-                />
+            <div className="md:col-span-1 grid grid-rows-2 gap-4">
+              <div>
+                <label
+                  htmlFor="latitude"
+                  className="block text-sm font-medium text-green-700 mb-1"
+                >
+                  Latitude
+                </label>
+                <div className="relative">
+                  <MapPin
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
+                    size={18}
+                  />
+                  <FormInput
+                    type="text"
+                    id="latitude"
+                    name="latitude"
+                    value={formData.latitude}
+                    onChange={handleChange}
+                    placeholder="Enter latitude"
+                  />
+                </div>
+                {errors.latitude && (
+                  <p className="text-red-500 text-xs mt-1">{errors.latitude}</p>
+                )}
               </div>
-              {errors.latitude && (
-                <p className="text-red-500 text-xs mt-1">{errors.latitude}</p>
-              )}
-            </div>
-            <div>
-              <label
-                htmlFor="longitude"
-                className="block text-sm font-medium text-green-700 mb-1"
-              >
-                Longitude
-              </label>
-              <div className="relative">
-                <MapPin
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
-                  size={18}
-                />
-                <FormInput
-                  type="text"
-                  id="longitude"
-                  name="longitude"
-                  value={formData.longitude}
-                  onChange={handleChange}
-                  placeholder="Enter longitude"
-                />
+              <div>
+                <label
+                  htmlFor="longitude"
+                  className="block text-sm font-medium text-green-700 mb-1"
+                >
+                  Longitude
+                </label>
+                <div className="relative">
+                  <MapPin
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
+                    size={18}
+                  />
+                  <FormInput
+                    type="text"
+                    id="longitude"
+                    name="longitude"
+                    value={formData.longitude}
+                    onChange={handleChange}
+                    placeholder="Enter longitude"
+                  />
+                </div>
+                {errors.longitude && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.longitude}
+                  </p>
+                )}
               </div>
-              {errors.longitude && (
-                <p className="text-red-500 text-xs mt-1">{errors.longitude}</p>
-              )}
             </div>
           </div>
           <div>
