@@ -220,10 +220,6 @@ const HospitalRegistration: React.FC = () => {
                 Hospital Type
               </label>
               <div className="relative">
-                <Hospital
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-green-600"
-                  size={18}
-                />
                 <select
                   id="type"
                   name="type"
