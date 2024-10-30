@@ -64,11 +64,10 @@ const SpecialtyManagement: React.FC = () => {
         { withCredentials: true }
       )
       .then((result) => {
-        console.log(result.data.data);
         dispatch(setHospitalData({ specialties: result.data.data }));
         setIsFormOpen(false);
         setEditingSpecialty(null);
-        successToast("Added new specialty");
+        successToast("Data updated");
       })
       .catch((err) => errorToast(err.response.data.message));
   };
