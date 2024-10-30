@@ -285,7 +285,6 @@ const SpecialtyForm: React.FC<{
               onChange={handleChange}
               rows={3}
               className="mt-1 block w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
-              required
             />
           </div>
           <div>
@@ -302,7 +301,6 @@ const SpecialtyForm: React.FC<{
               value={formData.department_info}
               onChange={handleChange}
               className="mt-1 block w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
-              required
             />
           </div>
           <div>
@@ -319,7 +317,6 @@ const SpecialtyForm: React.FC<{
               value={formData.phone}
               onChange={handleChange}
               className="mt-1 block w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
-              required
             />
           </div>
           <DoctorSchedule
