@@ -258,7 +258,7 @@ const SpecialtyForm: React.FC<{
               htmlFor="name"
               className="block text-sm font-medium text-green-700"
             >
-              Name
+              Specialty Name
             </label>
             <input
               type="text"
