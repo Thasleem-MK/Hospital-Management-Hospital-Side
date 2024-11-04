@@ -29,11 +29,7 @@ const refreshAccessToken = async () => {
 
     return newAccessToken;
   } catch (error) {
-    console.log("sdfsdfsdf");
-
     localStorage.removeItem("accessToken");
-    window.location.href =
-      "https://hospital-mangement-backend-jnh5.vercel.app/login";
     throw error;
   }
 };
