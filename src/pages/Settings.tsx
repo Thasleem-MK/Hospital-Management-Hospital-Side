@@ -383,7 +383,7 @@ export default function SettingsPage() {
               className="bg-white text-green-600 border border-green-600 hover:bg-green-50"
               onClick={async () => {
                 await apiClient
-                  .get("/api/hospital/logout", { withCredentials: true })
+                  .get("/api/logout", { withCredentials: true })
                   .then(() => {
                     localStorage.removeItem("accessToken");
                     window.location.href = "/";
