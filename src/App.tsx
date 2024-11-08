@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import { setHospitalData } from "./Redux/Dashboard";
 import { HomeProtector, Protector } from "./Components/Protector";
 import SettingsPage from "./pages/Settings";
+import PrivacyPolicyPage from "./pages/PrivacyPolicy";
 
 function App() {
   const dispatch = useDispatch();
@@ -91,6 +92,7 @@ function App() {
             </Protector>
           }
         />
+        <Route path="/privacy" element={<PrivacyPolicyPage />} />
       </Routes>
     </div>
   );
