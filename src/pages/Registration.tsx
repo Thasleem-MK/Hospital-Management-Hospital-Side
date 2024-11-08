@@ -533,6 +533,22 @@ const HospitalRegistration: React.FC = () => {
               Login here
             </Link>
           </p>
+          <p className="text-sm text-green-700">
+            {/* Have an account?{" "}
+            <Link
+              to="/login"
+              className="font-medium text-green-600 hover:text-green-500"
+            >
+              Login here
+            </Link> */}
+            <a
+              href="https://hospital-management-hospital-side.vercel.app/privacy"
+              target="_blank"
+              className="text-xs underline"
+            >
+              privacy & policy
+            </a>
+          </p>
         </div>
       </div>
 
