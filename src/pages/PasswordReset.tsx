@@ -33,7 +33,7 @@ const PasswordReset: React.FC = () => {
         "/api/email",
         {
           from: "hostahelthcare@gmail.com",
-          to: formData.email,
+          to: formData.email.toLowerCase(),
           subject: "Reset Password",
           text: `Otp for reseting your password is ${generateOtp}`,
         },
@@ -83,7 +83,7 @@ const PasswordReset: React.FC = () => {
       .post(
         "/api/hospital/password",
         {
-          email: formData.email,
+          email: formData.email.toLowerCase(),
           password: formData.newPassword,
         },
         { withCredentials: true }

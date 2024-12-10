@@ -81,7 +81,6 @@ const HospitalProfile: React.FC = () => {
     if (file) {
       const formData = new FormData();
       formData.append("image", file);
-      console.log(formData);
 
       await apiClient
         .post(`/api/hospital/profileImage/${_id}`, formData, {
@@ -102,8 +101,8 @@ const HospitalProfile: React.FC = () => {
       .put(
         `/api/hospital/details/${_id}`,
         {
-          name: name,
-          email: email,
+          name: name.toUpperCase(),
+          email: email.toLowerCase(),
           mobile: phone,
           address: address,
           latitude: latitude,
@@ -178,7 +177,7 @@ const HospitalProfile: React.FC = () => {
                   value={name}
                   onChange={handleChange}
                   disabled={true}
-                  className="pl-10"
+                  className="pl-10 cursor-not-allowed"
                   placeholder="Enter hospital name"
                 />
               </div>
@@ -212,7 +211,7 @@ const HospitalProfile: React.FC = () => {
                   id="email"
                   value={email}
                   disabled={true}
-                  className="pl-10"
+                  className="pl-10 cursor-not-allowed"
                   placeholder="Enter email address"
                 />
               </div>

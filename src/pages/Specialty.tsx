@@ -223,6 +223,29 @@ const SpecialtyForm: React.FC<{
   onSave: (specialty: Specialty) => void;
   onCancel: () => void;
 }> = ({ specialty, onSave, onCancel }) => {
+  const [specialtyNames, setSpecialtyNames] = useState<string[]>([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const result = await apiClient.get("/api/hospitals");
+        const hospitals: Hospital[] = result.data.data;
+
+        const uniqueSpecialties = new Set<string>();
+        hospitals.forEach((hospital) => {
+          hospital.specialties.forEach((specialty) => {
+            uniqueSpecialties.add(specialty.name.trim().toUpperCase());
+          });
+        });
+
+        setSpecialtyNames(Array.from(uniqueSpecialties));
+      } catch (err) {
+        console.error("Error fetching specialties:", err);
+      }
+    };
+    getData();
+  }, []);
+
   const [formData, setFormData] = useState<Specialty>(
     specialty || {
       _id: "",
@@ -233,14 +256,33 @@ const SpecialtyForm: React.FC<{
       doctors: [],
     }
   );
+  const [suggestions, setSuggestions] = useState<string[]>([]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({ ...prevData, [name]: value }));
+    setFormData((prevData) =>
+      name == "name"
+        ? { ...prevData, name: value.toUpperCase() }
+        : { ...prevData, [name]: value }
+    );
+    if (name === "name") {
+      const filteredSuggestions = specialtyNames.filter(
+        (specialtyName) =>
+          value && specialtyName.toLowerCase().includes(value.toLowerCase())
+      );
+      setSuggestions(filteredSuggestions);
+    }
   };
 
+  const handleSuggestionClick = (suggestion: string) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      name: suggestion.toUpperCase(),
+    }));
+    setSuggestions([]);
+  };
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSave(formData);
@@ -253,7 +295,7 @@ const SpecialtyForm: React.FC<{
           {specialty ? "Edit Specialty" : "Add New Specialty"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
+          <div className="relative">
             <label
               htmlFor="name"
               className="block text-sm font-medium text-green-700"
@@ -269,6 +311,19 @@ const SpecialtyForm: React.FC<{
               className="mt-1 block w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
               required
             />
+            {suggestions.length > 0 && (
+              <ul className="absolute z-10 bg-gray-300 w-full border border-gray-500 rounded-md mt-1 max-h-40 overflow-auto">
+                {suggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    className="px-3 py-2 hover:bg-gray-400 hover:text-white cursor-pointer"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion.toUpperCase()}
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
           <div>
             <label
@@ -379,7 +434,10 @@ const DoctorSchedule: React.FC<{
             type="text"
             value={doctor.name}
             onChange={(e) =>
-              updateDoctor(index, { ...doctor, name: e.target.value })
+              updateDoctor(index, {
+                ...doctor,
+                name: e.target.value.toUpperCase(),
+              })
             }
             placeholder="Doctor's name"
             className="mb-2 w-full border border-green-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-green-500 focus:border-green-500"
@@ -503,3 +561,22 @@ const DoctorSchedule: React.FC<{
 };
 
 export default SpecialtyManagement;
+
+export interface Hospital {
+  _id?: string;
+  name: string;
+  type: string;
+  address: string;
+  password: string;
+  phone: string;
+  email: string;
+  emergencyContact?: string;
+  image: { imageUrl: string; public_id: string };
+  latitude?: number;
+  longitude?: number;
+  about?: string;
+  working_hours: any;
+  reviews: any;
+  specialties: any[];
+  booking: any[];
+}

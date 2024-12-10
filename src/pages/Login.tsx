@@ -26,7 +26,11 @@ const HospitalLogin: React.FC = () => {
       return;
     }
     await apiClient
-      .post("/api/hospital/login", { ...formData }, { withCredentials: true })
+      .post(
+        "/api/hospital/login",
+        { email: formData.email.toLowerCase(), password: formData.password },
+        { withCredentials: true }
+      )
       .then((result) => {
         dispatch(setHospitalData({ _id: result.data.data._id }));
         successToast(result.data.message);
@@ -70,7 +74,10 @@ const HospitalLogin: React.FC = () => {
                 id="email"
                 value={formData.email}
                 onChange={(e: any) =>
-                  setFormData({ ...formData, email: e.target.value })
+                  setFormData({
+                    ...formData,
+                    email: e.target.value,
+                  })
                 }
                 placeholder="Enter your email"
               />
