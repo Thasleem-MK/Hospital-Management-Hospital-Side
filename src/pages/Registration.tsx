@@ -50,7 +50,13 @@ const HospitalRegistration: React.FC = () => {
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData((prev) =>
+      name == "name"
+        ? { ...prev, name: value.toUpperCase() }
+        : name == "email"
+        ? { ...prev, email: value.toLowerCase() }
+        : { ...prev, [name]: value }
+    );
     setErrors((prev) => ({ ...prev, [name]: "" }));
   };
 
@@ -109,7 +115,7 @@ const HospitalRegistration: React.FC = () => {
             "/api/email",
             {
               from: "hostahelthcare@gmail.com",
-              to: formData.email,
+              to: formData.email.toLowerCase(),
               subject: "OTP VERIFICATION",
               text: `Otp for Hosta registration is ${randomSixDigit}`,
             },

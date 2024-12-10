@@ -91,7 +91,7 @@ const SideBar = () => {
       </nav>
       <div className="text-sm absolute bottom-4 left-4">
         <p>Service Support:</p>
-        <p className="font-bold">+91 6282811230</p>
+        <p className="font-bold">+91 8714412090</p>
       </div>
     </aside>
   );

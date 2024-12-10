@@ -132,7 +132,7 @@ export default function SettingsPage() {
 
   const handleDeleteAccount = async () => {
     await apiClient
-      .delete(`/api/hospital/${_id}`,{withCredentials:true})
+      .delete(`/api/hospital/${_id}`, { withCredentials: true })
       .then((result) => {
         localStorage.removeItem("accessToken");
         successToast(result.data.message);
@@ -184,7 +184,7 @@ export default function SettingsPage() {
     e.preventDefault();
     await apiClient
       .put(`/api/hospital/details/${_id}`, {
-        name: profile.name,
+        name: profile.name.toUpperCase(),
       })
       .then((result) => successToast(result.data.message))
       .catch((err) => console.log(err));

@@ -121,11 +121,11 @@ const DoctorManagement: React.FC = () => {
         .put(
           `/api/hospital/doctor/${_id}`,
           {
-            name: formData.name,
-            specialty: formData.specialty,
+            name: formData.name.toUpperCase(),
+            specialty: formData.specialty?.toUpperCase(),
             consulting: formData.consulting,
             _id: formData._id,
-            qualification: formData.qualification,
+            qualification: formData.qualification?.toUpperCase(),
           },
           { withCredentials: true }
         )
@@ -139,10 +139,10 @@ const DoctorManagement: React.FC = () => {
         .post(
           `/api/hospital/doctor/${_id}`,
           {
-            name: formData.name,
-            specialty: formData.specialty,
+            name: formData.name.toUpperCase(),
+            specialty: formData.specialty?.toUpperCase(),
             consulting: formData.consulting,
-            qualification: formData.qualification,
+            qualification: formData.qualification?.toUpperCase(),
           },
           { withCredentials: true }
         )
