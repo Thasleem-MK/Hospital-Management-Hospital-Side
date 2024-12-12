@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Users,
   Stethoscope,
@@ -25,6 +25,36 @@ const HospitalDashboard: React.FC = () => {
     fetchData(dispatch, setHospitalData);
   }, []);
 
+  const [currentTime, setCurrentTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  const formatDate = (date: Date) => {
+    return date.toLocaleDateString("en-US", {
+      weekday: "short",
+      day: "numeric",
+      year: "numeric",
+      month: "short",
+    });
+  };
+
+  const formatTime = (date: Date) => {
+    return date.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    });
+  };
+
   return (
     <div className="flex h-screen bg-green-50">
       <SideBar />
@@ -38,8 +68,9 @@ const HospitalDashboard: React.FC = () => {
               <Menu size={24} />
             </button>
             <h1 className="text-xl font-semibold text-green-800">Dashboard</h1>
-            <div className="text-green-600 text-sm">
-              {new Date().toLocaleDateString()}
+            <div className="text-green-600 text-sm text-right">
+              <div className="font-medium">{formatTime(currentTime)}</div>
+              <div>{formatDate(currentTime)}</div>
             </div>
           </div>
         </header>
