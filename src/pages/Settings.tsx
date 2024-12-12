@@ -70,21 +70,26 @@ const Label = ({ children, htmlFor, className = "" }: LabelProps) => (
 
 // Custom Switch component
 const Switch = ({ id, checked, onChange }: SwitchProps) => (
-  <div className="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+  <div className="inline-block">
     <input
       type="checkbox"
-      name={id}
       id={id}
       checked={checked}
       onChange={onChange}
-      className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer"
+      className="sr-only"
     />
     <label
       htmlFor={id}
-      className={`toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer ${
-        checked ? "bg-green-500" : ""
+      className={`flex items-center w-12 h-7 rounded-full p-1 cursor-pointer transition-colors duration-300 ease-in-out ${
+        checked ? "bg-green-500" : "bg-gray-300"
       }`}
-    ></label>
+    >
+      <span
+        className={`bg-white w-6 h-6 rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${
+          checked ? "translate-x-4" : ""
+        }`}
+      />
+    </label>
   </div>
 );
 

@@ -1,11 +1,4 @@
-import {
-  Hospital,
-  Settings,
-  Stethoscope,
-  User,
-  Users,
-  X,
-} from "lucide-react";
+import { Hospital, Settings, Stethoscope, User, Users, X } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../Redux/Store";
@@ -42,13 +35,14 @@ const SideBar = () => {
               <span>Overview</span>
             </Link>
           </li>
+
           <li>
             <Link
-              to="/profile"
+              to="/specialties"
               className="flex items-center space-x-2 hover:bg-green-700 p-2 rounded-md"
             >
-              <User size={20} />
-              <span>Profile</span>
+              <Stethoscope size={20} />
+              <span>Specialties</span>
             </Link>
           </li>
           <li>
@@ -60,15 +54,7 @@ const SideBar = () => {
               <span>Doctors</span>
             </Link>
           </li>
-          <li>
-            <Link
-              to="/specialties"
-              className="flex items-center space-x-2 hover:bg-green-700 p-2 rounded-md"
-            >
-              <Stethoscope size={20} />
-              <span>Specialties</span>
-            </Link>
-          </li>
+
           {/* <li>
             <Link
               to="/appointments"
@@ -78,6 +64,15 @@ const SideBar = () => {
               <span>Appointments</span>
             </Link>
           </li> */}
+          <li>
+            <Link
+              to="/profile"
+              className="flex items-center space-x-2 hover:bg-green-700 p-2 rounded-md"
+            >
+              <User size={20} />
+              <span>Profile</span>
+            </Link>
+          </li>
           <li>
             <Link
               to="/settings"
