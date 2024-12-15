@@ -141,25 +141,8 @@ const HospitalHomePage: React.FC = () => {
       </main>
 
       <footer className="bg-green-800 text-white mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-lg font-semibold">Hosta</h3>
-              <p className="text-sm">Connecting Hospitals and Patients</p>
-            </div>
-            <div className="flex space-x-4">
-              <Link to="/about" className="hover:text-green-200">
-                About
-              </Link>
-              <Link to="/contact" className="hover:text-green-200">
-                Contact
-              </Link>
-              <Link to="/privacy" className="hover:text-green-200">
-                Privacy Policy
-              </Link>
-            </div>
-          </div>
-          <div className="mt-4 text-center text-sm">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <div className=" text-center text-sm">
             &copy; {new Date().getFullYear()} Hosta. All rights reserved.
           </div>
         </div>
